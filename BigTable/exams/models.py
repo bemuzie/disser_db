@@ -1,5 +1,5 @@
 from django.db import models
-
+from datetime import datetime
 # Create your models here.
 class Patient(models.Model):
 	fio = models.CharField(max_length = 100)
@@ -23,16 +23,16 @@ class Examination(models.Model):
 	modality = models.CharField(max_length=1,choices = CHOICES['modalities'])
 
 	ce_agent = models.CharField(max_length=10)
-	ce_conc = models.IntegerField()
-	ce_volume = models.IntegerField()
-	ce_speed_suggested = models.IntegerField()
-	ce_speed_real = models.IntegerField()
-	ce_water_volume = models.IntegerField()
-	ce_water_speed = models.IntegerField()
+	ce_conc = models.IntegerField(default =0)
+	ce_volume = models.IntegerField(default =0)
+	ce_speed_suggested = models.IntegerField(default =0)
+	ce_speed_real = models.IntegerField(default =0)
+	ce_water_volume = models.IntegerField(default =0)
+	ce_water_speed = models.IntegerField(default =0)
 
-	date = models.DateTimeField()
-	#exam_params = models.ForeighnKey(ExamParams)
-	#patient = models.ForeighnKey(Patient)
+	date = models.DateTimeField(auto_now_add = True)
 	
 	conclusion =  models.CharField(max_length = 500)
+
+	patient=models.ForeignKey(Patient,default =0)
 

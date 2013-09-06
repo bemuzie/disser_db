@@ -10,7 +10,7 @@ PROJECT_ROOT = os.path.join('D:/GitHub/disser_db/BigTable/BigTable')
 from django.core.management import setup_environ
 import BigTable.settings
 setup_environ(BigTable.settings)
-from exams.models import Patient
+from exams.models import Patient,Examination
 
 
 os.popen('chcp').read()
@@ -27,7 +27,8 @@ sys.stderr = codecs.getwriter('utf8')(sys.stderr)
 """
 print sys.getdefaultencoding()
 print sys.stdout.encoding # win32
-p='D:/GitHub/disser_db/acts'
+
+p='acts'
 
 def low(string):
 	return unicode(string,'utf-8').lower().encode('utf-8')
@@ -90,7 +91,13 @@ for root, dirs, files in os.walk(os.path.join(p)):
 
 		if 'подж' in kd or 'подж' in z:
 			patient = Patient(fio = fio, clinical_data = kd)
+			print patient.id
 			patient.save()
+			print patient.id
+			
+			examination = Examination(conclusion=z,patient=patient)
+			
+			examination.save()
 			
 			out_file.write('%s|%s|%s|%s|%s|%s|%s\n'%(fio,gr,dr,kd,z,group_desease,po))
 

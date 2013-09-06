@@ -5,6 +5,8 @@ import sys
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+PROJECT_PATH = os.path.realpath(os.path.dirname(__file__))
+
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -15,7 +17,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'D:/GitHub/disser_db/BigTable/exams.db',                      # Or path to database file if using sqlite3.
+        'NAME': os.path.join(PROJECT_PATH,'exams.db'),                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',

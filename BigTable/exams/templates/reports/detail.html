@@ -2,4 +2,12 @@
 <div>
 {{patient.clinical_data}}
 </div>
-<form action="{% url exams:change  %}" method="post">
+{% if examinations %}
+	<ul>
+	{% for ex in examinations%}
+		<li> {{ex.conclusion}} </li>
+	{% endfor %}
+	</ul>
+{%else%}
+	<p>No examinations</p>
+{%endif%}
