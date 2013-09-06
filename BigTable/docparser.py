@@ -6,11 +6,11 @@ import codecs
 import win32console 
 
 PROJECT_ROOT = os.path.join('D:/GitHub/disser_db/BigTable/BigTable')
-sys.path.insert(0,PROJECT_ROOT)
+#sys.path.insert(0,PROJECT_ROOT)
 from django.core.management import setup_environ
-import settings
-setup_environ(settings)
-from BigTable.exams.models import Patient
+import BigTable.settings
+setup_environ(BigTable.settings)
+from exams.models import Patient
 
 
 os.popen('chcp').read()
@@ -27,7 +27,7 @@ sys.stderr = codecs.getwriter('utf8')(sys.stderr)
 """
 print sys.getdefaultencoding()
 print sys.stdout.encoding # win32
-p='acts/'
+p='D:/GitHub/disser_db/acts'
 
 def low(string):
 	return unicode(string,'utf-8').lower().encode('utf-8')
@@ -91,6 +91,7 @@ for root, dirs, files in os.walk(os.path.join(p)):
 		if 'подж' in kd or 'подж' in z:
 			patient = Patient(fio = fio, clinical_data = kd)
 			patient.save()
+			
 			out_file.write('%s|%s|%s|%s|%s|%s|%s\n'%(fio,gr,dr,kd,z,group_desease,po))
 
 

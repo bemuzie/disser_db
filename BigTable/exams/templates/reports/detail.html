@@ -1,0 +1,5 @@
+<h1>{{ patient.fio }}</h1>
+<div>
+{{patient.clinical_data}}
+</div>
+<form action="{% url exams:change  %}" method="post">

@@ -6,7 +6,7 @@ import codecs
 import win32console 
 
 PROJECT_ROOT = os.path.join('D:/GitHub/disser_db/BigTable/BigTable')
-sys.path.insert(0,PROJECT_ROOT)
+#sys.path.insert(0,PROJECT_ROOT)
 from django.core.management import setup_environ
 import settings
 setup_environ(settings)

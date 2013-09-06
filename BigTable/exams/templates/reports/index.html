@@ -1,0 +1,10 @@
+{% if latest_patients_list %}
+    <ul>
+    {% for p in latest_patients_list %}
+        <li><a href="/reports/{{ p.id }}/">{{ p.fio }}</a></li>
+        <li>{{ p.clinical_data }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No patients are available.</p>
+{% endif %}
