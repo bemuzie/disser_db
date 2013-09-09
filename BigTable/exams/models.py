@@ -16,7 +16,7 @@ class Docs(models.Model):
 	name = models.CharField(max_length = 20)
 	group = models.CharField(max_length = 20)
 	description = models.CharField(max_length = 300)
-	img = models.ImageField(upload_to = '%s/%s'%(patient,group))
+	img = models.FileField(upload_to = 'files')
 
 class ExamParams(models.Model):
 	modality = models.CharField(max_length = 100)

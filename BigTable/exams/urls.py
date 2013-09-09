@@ -6,7 +6,7 @@ urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
     url(r'^(?P<patient_id>\d+)/',views.detail,name='detail'),
     url(r'^new',views.new_patient,name='new'),
-    url(r'^(?P<patient_id>\d+)/add_doc',views.add_doc,name='detail'),
+    
 
     
 )
