@@ -1,13 +1,34 @@
+{% extends "base.html" %}
+{% block title %} {{ patient.fio }} {% endblock %}
+
+{%block page%}
 <h1>{{ patient.fio }}</h1>
-<div>
+<div class='data1'>
 {{patient.clinical_data}}
+{{patient.docs_set.all}}
 </div>
+
+<form action="/reports/{{patient.id}}/add_doc" method="post" enctype="multipart/form-data">
+{%csrf_token%}
+		<table>
+			{{docs_form}}
+		</table><br>
+		<center><input type="submit" value="Отправить"></center>
+</form>
+
 {% if examinations %}
 	<ul>
 	{% for ex in examinations%}
-		<li> {{ex.conclusion}} </li>
+		<div class='data2'>
+		<li> 
+		<p>{{ex.date}}</p>
+		<p>{{ex.conclusion}} </p>
+		</div>
+		</li>
 	{% endfor %}
 	</ul>
 {%else%}
 	<p>No examinations</p>
 {%endif%}
+
+{%endblock page%}

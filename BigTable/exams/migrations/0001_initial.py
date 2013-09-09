@@ -12,6 +12,7 @@ class Migration(SchemaMigration):
         db.create_table(u'exams_patient', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('fio', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('birth_date', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
             ('weight', self.gf('django.db.models.fields.IntegerField')(default=0)),
             ('docs', self.gf('django.db.models.fields.CharField')(max_length=100)),
             ('clinical_data', self.gf('django.db.models.fields.CharField')(max_length=500)),
@@ -41,14 +42,15 @@ class Migration(SchemaMigration):
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('modality', self.gf('django.db.models.fields.CharField')(max_length=1)),
             ('ce_agent', self.gf('django.db.models.fields.CharField')(max_length=10)),
-            ('ce_conc', self.gf('django.db.models.fields.IntegerField')()),
-            ('ce_volume', self.gf('django.db.models.fields.IntegerField')()),
-            ('ce_speed_suggested', self.gf('django.db.models.fields.IntegerField')()),
-            ('ce_speed_real', self.gf('django.db.models.fields.IntegerField')()),
-            ('ce_water_volume', self.gf('django.db.models.fields.IntegerField')()),
-            ('ce_water_speed', self.gf('django.db.models.fields.IntegerField')()),
-            ('date', self.gf('django.db.models.fields.DateTimeField')()),
+            ('ce_conc', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('ce_volume', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('ce_speed_suggested', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('ce_speed_real', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('ce_water_volume', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('ce_water_speed', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
             ('conclusion', self.gf('django.db.models.fields.CharField')(max_length=500)),
+            ('patient', self.gf('django.db.models.fields.related.ForeignKey')(default=0, to=orm['exams.Patient'])),
         ))
         db.send_create_signal(u'exams', ['Examination'])
 
@@ -71,16 +73,17 @@ class Migration(SchemaMigration):
         u'exams.examination': {
             'Meta': {'object_name': 'Examination'},
             'ce_agent': ('django.db.models.fields.CharField', [], {'max_length': '10'}),
-            'ce_conc': ('django.db.models.fields.IntegerField', [], {}),
-            'ce_speed_real': ('django.db.models.fields.IntegerField', [], {}),
-            'ce_speed_suggested': ('django.db.models.fields.IntegerField', [], {}),
-            'ce_volume': ('django.db.models.fields.IntegerField', [], {}),
-            'ce_water_speed': ('django.db.models.fields.IntegerField', [], {}),
-            'ce_water_volume': ('django.db.models.fields.IntegerField', [], {}),
+            'ce_conc': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'ce_speed_real': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'ce_speed_suggested': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'ce_volume': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'ce_water_speed': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'ce_water_volume': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'conclusion': ('django.db.models.fields.CharField', [], {'max_length': '500'}),
-            'date': ('django.db.models.fields.DateTimeField', [], {}),
+            'date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'modality': ('django.db.models.fields.CharField', [], {'max_length': '1'})
+            'modality': ('django.db.models.fields.CharField', [], {'max_length': '1'}),
+            'patient': ('django.db.models.fields.related.ForeignKey', [], {'default': '0', 'to': u"orm['exams.Patient']"})
         },
         u'exams.examparams': {
             'Meta': {'object_name': 'ExamParams'},
@@ -90,6 +93,7 @@ class Migration(SchemaMigration):
         },
         u'exams.patient': {
             'Meta': {'object_name': 'Patient'},
+            'birth_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
             'clinical_data': ('django.db.models.fields.CharField', [], {'max_length': '500'}),
             'docs': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'fio': ('django.db.models.fields.CharField', [], {'max_length': '100'}),

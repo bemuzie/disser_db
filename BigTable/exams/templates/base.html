@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="ru">
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="/media/main.css" type="text/css">
+
+</head>
+<body>
+
+{% block head %}
+<h1>Заголовок1</h1>
+	<nav style="display:block">
+	<ul id ="topMenu"> 
+	<li class="mainMenu_el">
+		<a href="/reports/">Главная </a>
+		</li>
+	<li class="mainMenu_el">
+		<a href="/reports/new">Добавить нового </a>
+		</li>
+	<li class="mainMenu_el"></li>
+	<li class="mainMenu_el"></li>
+	</ul>
+	</nav>
+{%endblock%}
+
+{% block page %}
+{%endblock%}
+
+{% block footer %}
+{%endblock%}
+
+</body>
+</html>
