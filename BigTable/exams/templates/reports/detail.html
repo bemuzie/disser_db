@@ -3,32 +3,49 @@
 
 {%block page%}
 <h1>{{ patient.fio }}</h1>
-<div class='data1'>
-{{patient.clinical_data}}
-{{patient.docs_set.all}}
-</div>
 
-<form action="/reports/{{patient.id}}/add_doc" method="post" enctype="multipart/form-data">
-{%csrf_token%}
-		<table>
-			{{docs_form}}
-		</table><br>
-		<center><input type="submit" value="Отправить"></center>
-</form>
+<div class='data1'> <!-- заметки -->
+	
+	</div>
+<div class='data1'> <!-- Клинические данные -->
+	{{patient.clinical_data}}
+	<form action="" method="post">
+	{%csrf_token%}
+				<table>
+				{{patient_form}}
+			</table><br>
+			<center><input type="submit" value="Отправить"></center>
+	</form> 
+	</div>
 
-{% if examinations %}
-	<ul>
-	{% for ex in examinations%}
-		<div class='data2'>
-		<li> 
-		<p>{{ex.date}}</p>
-		<p>{{ex.conclusion}} </p>
-		</div>
-		</li>
-	{% endfor %}
-	</ul>
-{%else%}
-	<p>No examinations</p>
-{%endif%}
+<div class='docs_set'>
+	<!-- поле с именами загруженных картинок разбитое по группам и кнопками "добавить" и "показать"-->
+	{{patient.docs_set.all}}
+	<form action="/reports/{{patient.id}}/add_doc" method="post" enctype="multipart/form-data">
+	{%csrf_token%}
+			<table>
+				{{docs_form}}
+			</table><br>
+			<center><input type="submit" value="Отправить"></center>
+	</form>
+	</div>
+
+<div class='data1'> <!-- поле "проведенные исследования"-->
+	{% if examinations %}
+		<ul>
+		{% for ex in examinations%}
+			<div class='data2'>
+			<li> 
+			<p>{{ex.date}}</p>
+			<p>{{ex.conclusion}} </p>
+			</div>
+			</li>
+		{% endfor %}
+		</ul>
+	{%else%}
+		<p>No examinations</p>
+	{%endif%}
+
+	</div>
 
 {%endblock page%}

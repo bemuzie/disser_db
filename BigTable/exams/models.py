@@ -17,6 +17,8 @@ class Docs(models.Model):
 	group = models.CharField(max_length = 20)
 	description = models.CharField(max_length = 300)
 	img = models.FileField(upload_to = 'files')
+	def __unicode__(self):
+		return self.name
 
 
 class ExamParams(models.Model):
@@ -35,7 +37,6 @@ class Examination(models.Model):
 							('M','MRI'))}
 
 	modality = models.CharField(max_length=1,choices = CHOICES['modalities'])
-
 	ce_agent = models.CharField(max_length=10)
 	ce_conc = models.IntegerField(default =0)
 	ce_volume = models.IntegerField(default =0)
