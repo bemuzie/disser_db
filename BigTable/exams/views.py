@@ -5,7 +5,7 @@ from django.template import RequestContext, loader
 from django.shortcuts import get_object_or_404, render,redirect
 from django.contrib import messages
 from django.utils.encoding import smart_str
-
+from django.core.urlresolvers import reverse
 
 
 from exams.models import *
@@ -27,8 +27,15 @@ def detail(request, patient_id):
 	patient = get_object_or_404(Patient, pk=patient_id)
 	examinations = patient.examination_set.all()
 	template = loader.get_template('reports/detail.html')
-	docs_form = DocsForm(initial = {'patient':patient})
-	print dir(docs_form)
+	
+	docs_form = DocsForm(request.POST or None,request.FILES or None)
+	if docs_form.is_valid():
+		docs_form.save(commit=False)
+		docs_form.patient=patient
+		docs_form.save()
+		docs_form = DocsForm()
+		return HttpResponseRedirect(reverse('exams.views.detail', args=(patient.id,)))
+	
 	return render(request,'reports/detail.html',{'patient':patient,
 												'examinations' : examinations, 
 												'docs_form':docs_form
@@ -36,27 +43,14 @@ def detail(request, patient_id):
 
 def new_patient(request):
 	all_is_right='	'
-	if request.method == 'POST':
-		form = PatientForm(request.POST)
-		if form.is_valid():
-			form.save()
-			all_is_right = u'новый пациент зарегистрирован'
-			form = PatientForm()
-	else:
+	form = PatientForm(request.POST or None)
+	if form.is_valid():
+		form.save()
+		all_is_right = u'новый пациент зарегистрирован'
 		form = PatientForm()
 	return render (request,'reports/new_patient.html',
 		{'form':form,
 		'all_is_right':all_is_right})
-def add_doc(request, patient_id):
-	print 1
-	p = get_object_or_404(Patient, pk=patient_id)
-	if request.method == 'POST':
-		docs_form = DocsForm(request.POST, request.FILES)
-		if form.is_valid():
-			form.save()
-			docs_form = DocsForm()
-	else:
-		docs_form = DocsForm()
-	return 	HttpResponseRedirect(reverse('exams.views.detail', args=(p.id,)))
+
 
 

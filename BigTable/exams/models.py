@@ -16,7 +16,11 @@ class Docs(models.Model):
 	name = models.CharField(max_length = 20)
 	group = models.CharField(max_length = 20)
 	description = models.CharField(max_length = 300)
+<<<<<<< HEAD
 	img = models.ImageField(upload_to = 'files/')
+=======
+	img = models.FileField(upload_to = 'files')
+>>>>>>> 6515f3848a90f8add9af8fd448fce149d9504ba5
 
 class ExamParams(models.Model):
 	modality = models.CharField(max_length = 100)

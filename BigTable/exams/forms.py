@@ -13,6 +13,5 @@ class PatientForm(forms.ModelForm):
 class DocsForm(forms.ModelForm):
     class Meta:
         model = Docs
-
+        fields =('date','name','group','description','img')
         #widget = {'img':mywidgets.MultiFileInput}
-
