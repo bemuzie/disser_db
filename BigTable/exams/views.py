@@ -32,7 +32,8 @@ def detail(request, patient_id):
 	if docs_form.is_valid():
 		docs_form.save(commit=False)
 		docs_form.patient=patient
-		docs_form.save()
+		
+		patient.docs_set.add(docs_form.instance)
 		docs_form = DocsForm()
 		return HttpResponseRedirect(reverse('exams.views.detail', args=(patient.id,)))
 	
