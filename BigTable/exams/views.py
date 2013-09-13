@@ -29,11 +29,11 @@ def patient_list(request):
 
 def detail(request, patient_id):
 	patient = get_object_or_404(Patient, pk=patient_id)
-	patient_form = PatientForm(request.POST or None,instance=patient)
+	patient_form = PatientForm_lite(request.POST or None,instance=patient)
 	if patient_form.is_valid():
 		patient_form.save()
-		patient_form = PatientForm(instance=patient)
-		
+		patient_form = PatientForm_lite(instance=patient)
+
 	examinations = patient.examination_set.all()
 	template = loader.get_template('reports/detail.html')
 	docs_form = DocsForm(request.POST or None,request.FILES or None)
@@ -57,9 +57,8 @@ def add_patient(request):
 	if patient_form.is_valid():
 		patient_form.save()
 		patient_form = PatientForm()
-	return render (request,'reports/new_patient.html',
-		{'form':patient_form,
-		'all_is_right':all_is_right})
+	return render (request,'reports/add_patient.html',
+		{'form':patient_form,})
 
 
 

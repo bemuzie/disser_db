@@ -9,6 +9,13 @@ class PatientForm(forms.ModelForm):
         birth_date = forms.DateField(widget= widgets.SelectDateWidget())
 
         #fields =('fio','weight','birth_date')
+class PatientForm_lite(forms.ModelForm):
+	clinical_data = forms.CharField(widget = forms.Textarea)
+	class Meta:
+		model = Patient
+
+		fields = ('clinical_data','weight')
+
 
 class DocsForm(forms.ModelForm):
     class Meta:
