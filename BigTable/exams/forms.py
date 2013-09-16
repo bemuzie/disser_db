@@ -3,6 +3,7 @@ from django.forms.extras import widgets
 from exams.models import *
 from exams import widgets as mywidgets
 from django.forms.formsets import formset_factory
+from django.forms.models import modelformset_factory
 
 class PatientForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -53,5 +54,5 @@ class ExaminationForm(forms.ModelForm):
 class ReminderForm(forms.ModelForm):
     class Meta:
         model = Reminder
-        exclude = ['patient','done']
-ReminderFormSet = formset_factory(ReminderForm, max_num=1)
+        
+ReminderFormSet = modelformset_factory(Reminder,extra=1,max_num=None,fields=('note', 'remind_date'))

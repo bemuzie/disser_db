@@ -74,15 +74,8 @@
 <script src="/media/js/offcanvas.js"></script>
 <script src="/media/js/bootstrap-datepicker.js"></script>
 <script type="text/javascript"> $('#dp2').datepicker(); </script>
-<script type="text/javascript"> $('#change_reminder').click(function() {
-    var $this = $(this);
-    if ($this.hasClass('btn-success')){
-        $this.removeClass('btn-success').addClass('btn-danger');
-    }
-    else {
-        $this.removeClass('btn-danger').addClass('btn-success');    
-    }
-    
-});</script>
+
+{% block scripts %}
+{%endblock%}
 </body>
 </html>

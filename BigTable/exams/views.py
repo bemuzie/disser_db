@@ -16,7 +16,7 @@ def index(request):
 	template = loader.get_template('reports/index.html')
 
 	context = RequestContext(request,{})
-	print request.GET
+	
 
 
 	return HttpResponse(template.render(context))
@@ -35,17 +35,21 @@ def detail(request, patient_id):
 	patient_form = PatientForm_lite(instance=patient)
 	examinations = patient.examination_set.all()
 	docs_form = DocsForm()
-	ReminderFormSet = formset_factory(ReminderForm,extra=0,max_num=1)
-	reminder_formset = ReminderFormSet(initial = [{'patient':patient_id}])
-	print reminder_formset[0].instance.done
+	
+
+	reminder_formset = ReminderFormSet(queryset=Reminder.objects.filter(patient=patient),
+		initial=[{'patient':patient}])
+	
+	
 	if request.POST.get('patient_submit'):
-		print "Patient"
+		
 		patient_form = PatientForm_lite(request.POST or None,instance=patient)
 		if patient_form.is_valid():
 			patient_form.save()
 			patient_form = PatientForm_lite(instance=patient)
+			return HttpResponseRedirect(reverse('exams.views.detail', args=(patient.id,)))
 	elif request.POST.get('docs_submit'):
-		print "Docs"
+		
 		docs_form = DocsForm(request.POST or None,request.FILES or None)
 		if docs_form.is_valid():
 			docs_form.save(commit=False)
@@ -55,13 +59,13 @@ def detail(request, patient_id):
 			docs_form = DocsForm()
 			return HttpResponseRedirect(reverse('exams.views.detail', args=(patient.id,)))
 	elif request.POST.get('change'):
-		print "change",request.POST
+		
 		new_examination(request, patient_id)
+		return HttpResponseRedirect(reverse('exams.views.detail', args=(patient.id,)))
 	elif request.POST.get('delete'):
 		print "delete"
+		return HttpResponseRedirect(reverse('exams.views.detail', args=(patient.id,)))
 
-
-	
 	return render(request,'reports/detail.html',{'patient':patient,
 												'examinations' : examinations, 
 												'docs_form':docs_form,
@@ -108,14 +112,36 @@ def modify_examination(request, patient_id, examination_id):
 def modify_reminder(request, patient_id):
 	
 	patient = get_object_or_404(Patient, pk=patient_id)
-	last_reminder_form = ReminderForm(request.POST)
-	print last_reminder_form
-	print request.POST
+	reminder_form = ReminderForm(request.POST)
 	if request.POST.get("new_reminder"):
-		if last_reminder_form.is_valid():
-			print valid
-			patient.reminder_set.add(last_reminder_form.instance)
+		reminder_formset = ReminderFormSet(request.POST)
+		if reminder_formset.is_valid():
+			reminder_formset.save(commit=False)
+			for f in reminder_formset:
+				f.patient=patient
+				try:
+					pi=patient.reminder_set.get(pk=f.instance.id)
+					pi=f.instance
+
+
+				except:
+					patient.reminder_set.add(f.instance)
+			
+			reminder_formset = ReminderFormSet(queryset=Reminder.objects.filter(patient=patient),
+				initial=[{'patient':patient}])
+			return HttpResponseRedirect(reverse('exams.views.detail', args=(patient.id,)))
+
 	if request.POST.get("change_reminder"):
+		reminder = patient.reminder_set.get(pk=request.POST.get("change_reminder"))
+		print 1
+		reminder.done = not reminder.done
+		reminder.save()
+		
+		return HttpResponse(status=204)
+	if request.POST.get("delete_reminder"):
+		
+		patient.reminder_set.get(pk=request.POST.get("delete_reminder")).delete()
+		return HttpResponseRedirect(reverse('exams.views.detail', args=(patient.id,)))
 
 		return HttpResponse(status=204)
 def delete_patient (request, patient_id):

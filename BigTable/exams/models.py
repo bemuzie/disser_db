@@ -62,7 +62,7 @@ class Reminder(models.Model):
 						(False,u'Сделать'))}
 	note = models.CharField(max_length = 140)
 	remind_date = models.DateField(blank=True, null=True)
-	done = models.IntegerField(default=False, choices = CHOICES['done'])
+	done = models.BooleanField(default=False, choices = CHOICES['done'])
 	patient = models.ForeignKey(Patient,default = 0)
 
 

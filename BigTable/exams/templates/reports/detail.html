@@ -7,17 +7,20 @@
 <h1>{{ patient.fio }}</h1>
 
 <div class='container'> <!-- заметки -->
-	<form class = "form-horizontal" action="./modify_reminder" method="post" name='patient'>
+
+	<form class = "form-horizontal" action="/reports/{{patient.id}}/modify_reminder" method="post" name='patient'>
 	{%csrf_token%}
 		{{reminder_formset.management_form}}
 		{%for reminder_form in reminder_formset%}
 			<div class="form-group">
 				{{reminder_form}}
-				<input class="btn btn-success" type="submit" value="{{reminder_form.instance.get_done_display}}" id= 'change_reminder' name = "change_reminder">
+				<button class="btn " type="submit" value="{{reminder_form.instance.id}}" id= 'change_reminder' name = "change_reminder">{{reminder_form.instance.get_done_display}}</button>
+				<button class="btn btn-danger" type="submit" value="{{reminder_form.instance.id}}" id= 'change_reminder' name = "delete_reminder">Удалить</button>
 			</div>
 		{%endfor%}
 		<input class="btn btn-success" type="submit" value="Новое" name = "new_reminder">
 	</form> 
+
 </div>
 
 <div class='data1'> <!-- Клинические данные -->
@@ -77,5 +80,35 @@
 
 
 }
+
+
+
 {%endblock page%}
 
+{% block scripts %}
+<script type="text/javascript"> $('button[name = "change_reminder"]').click(function() {
+    var $this = $(this);
+    if ($this.text() == "Сделано"){
+        $this.removeClass('btn-success').addClass('btn-warning');
+        $this.html("Сделать").button('refresh');
+    }
+    else {
+        $this.removeClass('btn-warning').addClass('btn-success').button("option", "label", "new text");
+        $this.html("Сделано").button('refresh');
+    }
+    
+});</script>
+
+<script type="text/javascript"> 
+$(document).ready(function() {
+	$('button[name = "change_reminder"]').each(function(){
+		if ($(this).text() == "Сделано" ){
+			$(this).addClass('btn-success');
+		}
+		else {
+			$(this).addClass('btn-warning');	
+		}
+	});
+});
+</script>
+{%endblock%}
