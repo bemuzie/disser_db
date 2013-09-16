@@ -17,7 +17,16 @@
             <div class="col-4 col-sm-6 col-lg-4">
               <h2>{{ p.fio }}</h2>
               <p>{{ p.clinical_data }}</p>
-              <p><a class="btn btn-default" href="/reports/{{ p.id }}/">Детали... &raquo;</a></p>
+              <p>
+                  
+                  <form class="form-inline" method="post" action="/reports/{{ p.id }}/delete">
+                  {% csrf_token %}
+                  <p>
+                      <a class="btn btn-default" href="/reports/{{ p.id }}/">Детали... &raquo;</a>
+                      <input class="btn btn-danger" type="Submit" value = "Удалить" name='delete'>    
+                  </p>
+                  </form>
+              </p>
             </div><!--/span-->
             
             

@@ -12,4 +12,6 @@ urlpatterns = patterns('',
     url(r'^(?P<patient_id>\d+)/new_remind',views.new_examination,name='new_note'),
     url(r'^(?P<patient_id>\d+)/(?P<examination_id>\d+)/modify_examination',views.modify_examination,name='detail2'),
     url(r'^(?P<patient_id>\d+)/modify_reminder',views.modify_reminder,name='detail2'),
+    url(r'^(?P<patient_id>\d+)/delete',views.delete_patient,name='deletion'),
+
 )

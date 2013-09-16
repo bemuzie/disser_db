@@ -116,7 +116,12 @@ def modify_reminder(request, patient_id):
 			print valid
 			patient.reminder_set.add(last_reminder_form.instance)
 	if request.POST.get("change_reminder"):
-		
+
 		return HttpResponse(status=204)
-
-
+def delete_patient (request, patient_id):
+	if request.POST:
+		patient = get_object_or_404(Patient, pk=patient_id)
+		patient.delete()
+		return HttpResponseRedirect(reverse('exams.views.patient_list'))
+	else:
+		raise Http404
