@@ -1,1 +1,24 @@
 {% extends "base.html" %}
+{%block page%}
+<div class='row'>
+	<div  class="col-xs-12 col-sm-6 col-lg-6">
+	{%for note in reminder_uptodate%}
+		<div>
+		<h1>{{note.patient.fio}}</h1>
+		<p>{{note.note}} </p>
+		<p>{{note.remind_date}} </p>
+		</div>
+	{%endfor%}
+	</div>
+
+	<div class="col-xs-12 col-sm-6 col-lg-6">
+	{%for note in reminder_expired%}
+		<div class='text-danger'>
+		<h1>{{note.patient.fio}}</h1>
+		<p>{{note.note}} </p>
+		<p>{{note.remind_date}} </p>
+		</div>
+	{%endfor%}
+	</div>
+</div>
+{%endblock page%}

@@ -6,16 +6,20 @@ from django.shortcuts import get_object_or_404, render,redirect
 from django.contrib import messages
 from django.utils.encoding import smart_str
 from django.core.urlresolvers import reverse
-
+from datetime import date
 
 from exams.models import *
 from exams.forms import *
 
 
 def index(request):
+	reminder=Reminder.objects.filter(done=False).order_by('remind_date')
 	template = loader.get_template('reports/index.html')
-
-	context = RequestContext(request,{})
+	today=date.today()
+	reminder_expired=[r for r in reminder if r.remind_date<today]
+	reminder_uptodate=[r for r in reminder if r.remind_date>=today]
+	context = RequestContext(request,{'reminder_expired':reminder_expired,
+										'reminder_uptodate':reminder_uptodate})
 	
 
 
