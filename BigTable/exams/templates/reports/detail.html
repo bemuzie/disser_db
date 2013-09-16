@@ -1,42 +1,69 @@
 {% extends "base.html" %}
+{% load bootstrap %}
 {% block title %} {{ patient.fio }} {% endblock %}
 
 {%block page%}
+
 <h1>{{ patient.fio }}</h1>
 
-<div class='data1'> <!-- заметки -->
-	
-	</div>
+<div class='container'> <!-- заметки -->
+	<form class = "form-horizontal" action="./modify_reminder" method="post" name='patient'>
+	{%csrf_token%}
+		{{reminder_formset.management_form}}
+		{%for reminder_form in reminder_formset%}
+			<div class="form-group">
+				{{reminder_form}}
+				<input class="btn btn-success" type="submit" value="{{reminder_form.instance.get_done_display}}" id= 'change_reminder' name = "change_reminder">
+			</div>
+		{%endfor%}
+		<input class="btn btn-success" type="submit" value="Новое" name = "new_reminder">
+	</form> 
+</div>
+
 <div class='data1'> <!-- Клинические данные -->
-	<form action="" method="post">
+	<form action="" method="post" name='patient'>
 	{%csrf_token%}
 				<table>
-				{{patient_form}}
+	
+				
+				{{patient_form | bootstrap}}
+
+				
 			</table><br>
-			<center><input type="submit" value="Отправить"></center>
+			<center><input class="btn btn-success" type="submit" value="Отправить" name = "patient_submit"></center>
 	</form> 
 	</div>
 
-<div class='docs_set'>
+<div class='container'>
 	<!-- поле с именами загруженных картинок разбитое по группам и кнопками "добавить" и "показать"-->
 	{{patient.docs_set.all}}
-	<form action="/reports/{{patient.id}}/add_doc" method="post" enctype="multipart/form-data">
+	<form class="form-inline" action="" method="post" enctype="multipart/form-data">
 	{%csrf_token%}
-			<table>
-				{{docs_form}}
-			</table><br>
-			<center><input type="submit" value="Отправить"></center>
+		
+		{{docs_form.inline}}
+
+		<div class="form-actions">
+			<input type="submit" class="btn btn-primary" value="Отправить" name="docs_submit">
+		</div>
 	</form>
-	</div>
+</div>
 
 <div class='data1'> <!-- поле "проведенные исследования"-->
 	{% if examinations %}
 		<ul>
 		{% for ex in examinations%}
-			<div class='data2'>
 			<li> 
+			<div class='data2'>
+			
 			<p>{{ex.date}}</p>
 			<p>{{ex.conclusion}} </p>
+			<p><form class="form-actions" method="post" action="./{{ex.id}}/modify_examination">
+				{% csrf_token %}
+				<input class="btn btn-warning" type="Submit" value = "Изменить" name='modify'>			
+				<input class="btn btn-danger" type="Submit" value = "Удалить" name='delete'>			
+				</form>
+				</p>
+
 			</div>
 			</li>
 		{% endfor %}
@@ -45,6 +72,10 @@
 		<p>No examinations</p>
 	{%endif%}
 
+	<p><a class="btn btn-success" href="./new_examination" >Добавить</a></p>
 	</div>
 
+
+}
 {%endblock page%}
+

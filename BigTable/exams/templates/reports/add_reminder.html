@@ -1,17 +1,14 @@
 {% extends "base.html" %}
-{% load bootstrap %}
-
 {% block title %} Новый пациент {% endblock %}
 {% block page %}
 <div>
-	<h2>Регистрация нового пациента</h2>
+	<h2>Добавить заметку</h2>
         
-	<h3>{% if all_is_right %}{{ all_is_right }}{% endif %}</h3>
 	<form method="post" action="">
 		{% csrf_token %}
-		
-		{{ form | bootstrap}} 
-		
+		<table>
+			{{ remind_form }} 
+		</table><br>
 		<center><input type="submit" value="Отправить"></center>
 	</form>
 </div>	

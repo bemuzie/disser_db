@@ -2,36 +2,87 @@
 <html lang="ru">
 <head>
     <title>{% block title %}{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
+    <!-- 
     <link rel="stylesheet" href="/media/main.css" type="text/css">
+	-->
+    
+    <!-- Bootstrap core CSS -->
+    <link href="/media/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/media/css/exams.css" rel="stylesheet">
+    <link href="/media/css/datepicker.css" rel="stylesheet">
+    
 
+    <!-- Custom styles for this template -->
+    
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../../assets/js/html5shiv.js"></script>
+      <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
 </head>
-<body>
+<body >
+{% block header %}
 
-{% block head %}
-<h1>Заголовок1</h1>
-	<nav style="display:block">
-	<ul id ="topMenu"> 
-	<li class="mainMenu_el">
-		<a href="/">Главная </a>
-		</li>
-	<li class="mainMenu_el">
-		<a href="/reports/new">Добавить нового </a>
-		</li>
-	<li class="mainMenu_el">
-		<a href="/reports/patients">Пациенты </a>
-		</li>
-	<li class="mainMenu_el">
-		<a href="">Статистика </a>
-		</li>
-	</ul>
-	</nav>
-{%endblock%}
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">BigTable</a>
+            <button class = "navbar-toggle" data-toggle ="collapse" data-target =".navHeaderCollapse">
+                <span class = "icon-bar"></span>
+                <span class = "icon-bar"></span>
+                <span class = "icon-bar"></span>
+            </button>
+        </div>
 
+        <div class = "collapse navbar-collapse navHeaderCollapse">
+
+            <ul class="nav navbar-nav navbar-left">
+                <li class="active"><a href="/">Главная</a></li>
+                <li><a href="/reports/patients">Пациенты</a></li>
+                <li><a href="#contact">Статистика</a></li>
+                <li><a href="/reports/new">Добавить</a></li>
+
+            </ul>
+            <form class = "navbar-form navbar-right" method="get" action='/reports/patients/'>
+                <input class="form-control" name="search" placeholder="Найти пациента..." type="search"><i class="icon-search"></i>
+
+            </form> 
+        </div> 
+
+    </div>
+</div><!-- /.navbar -->
+
+{% endblock header %}
+
+<div class="container">
 {% block page %}
 {%endblock%}
+</div>
+
 
 {% block footer %}
 {%endblock%}
 
+<script src="/media/js/jquery.js"></script>
+<script src="/media/js/bootstrap.min.js"></script>
+<script src="/media/js/offcanvas.js"></script>
+<script src="/media/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript"> $('#dp2').datepicker(); </script>
+<script type="text/javascript"> $('#change_reminder').click(function() {
+    var $this = $(this);
+    if ($this.hasClass('btn-success')){
+        $this.removeClass('btn-success').addClass('btn-danger');
+    }
+    else {
+        $this.removeClass('btn-danger').addClass('btn-success');    
+    }
+    
+});</script>
 </body>
 </html>

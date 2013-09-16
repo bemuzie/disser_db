@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="ru">
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    
+    <!-- 
+    <link rel="stylesheet" href="/media/main.css" type="text/css">
+	-->
+    
+    <!-- Bootstrap core CSS -->
+    <link href="/media/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/media/css/offcanvas.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../../assets/js/html5shiv.js"></script>
+      <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
+
+
+</head>
+<body>
+<div id='header'>
+{% block header %}
+	<h1>Заголовок1</h1>
+		<nav style="display:block">
+		<ul id ="topMenu"> 
+			<li class="mainMenu_el">
+				<a href="/">Главная </a>
+				</li>
+			<li class="mainMenu_el">
+				<a href="/reports/new">Добавить нового </a>
+				</li>
+			<li class="mainMenu_el">
+				<a href="/reports/patients">Пациенты </a>
+				</li>
+			<li class="mainMenu_el">
+				<a href="">Статистика </a>
+				</li>
+			</ul>
+			</nav>
+		<form action='/reports/patients/' id='search_box'>
+			<input type = "text" name="search" placeholder="Поиск пациента">
+			<button type = submit value="поиск">Найти</button>
+			</form>
+{%endblock header%}
+</div>
+<div>
+{% block page %}
+{%endblock%}
+</div>
+
+{% block footer %}
+{%endblock%}
+
+    <script src="media/js/jquery.js"></script>
+    <script src="media/dist/js/bootstrap.min.js"></script>
+    <script src="media/offcanvas.js"></script>
+</body>
+</html>
