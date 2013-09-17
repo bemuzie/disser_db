@@ -2,3 +2,13 @@ body {
   padding-top: 50px;
   padding-bottom: 20px;
 }
+
+.col_autohigh{
+    margin-bottom: -99999px;
+    padding-bottom: 99999px;
+    background-color:#ffc;
+}
+
+.col-wrap{
+    overflow: hidden; 
+}

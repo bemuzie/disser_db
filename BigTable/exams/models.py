@@ -65,5 +65,14 @@ class Reminder(models.Model):
 	done = models.BooleanField(default=False, choices = CHOICES['done'])
 	patient = models.ForeignKey(Patient,default = 0)
 
+class Tag(models.Model):
+	title = models.CharField(max_length=250)
+	slug = models.SlugField(blank=True)
+
+class TagDictionary(models.Model):
+	word = models.CharField(max_length=250)
+	tag = models.ForeignKey(Tag, default = 0)
+	
+
 
 

@@ -155,3 +155,7 @@ def delete_patient (request, patient_id):
 		return HttpResponseRedirect(reverse('exams.views.patient_list'))
 	else:
 		raise Http404
+def statistis(request):
+	patients_num = len(Patient.objects.all())
+	examinations_num = len(Examinations.objects.all().filter(modality='P'))
+	
