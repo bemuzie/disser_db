@@ -7,6 +7,7 @@
 		<h1>{{note.patient.fio}}</h1>
 		<p>{{note.note}} </p>
 		<p>{{note.remind_date}} </p>
+		<a class="btn btn-default" href="/reports/{{ note.patient.id }}/">Детали... &raquo;</a>
 		</div>
 	{%endfor%}
 	</div>
@@ -17,6 +18,7 @@
 		<h1>{{note.patient.fio}}</h1>
 		<p>{{note.note}} </p>
 		<p>{{note.remind_date}} </p>
+		<a class="btn btn-default" href="/reports/{{ note.patient.id }}/">Детали... &raquo;</a>
 		</div>
 	{%endfor%}
 	</div>
