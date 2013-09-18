@@ -4,21 +4,52 @@
 {% block title %} Новый пациент {% endblock %}
 {% block page %}
 <div class="container">
-	<div class="row">
-		<div  class="col-lg-8 ">
+	<div  >
 			<h2>Регистрация нового пациента</h2>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-3 ">
+			<button class="btn-lg btn-info btn-block" 
+			data-toggle ="tab" data-target =".patientInputForm">
+			Ввести данные
+			</button>
 		</div>
-		<div class="col-lg-4 ">
-			<button class="btn-lg btn-info btn-block">Добавить из файла</button>
+		<div class="col-lg-3 ">
+			<button class="btn-lg btn-info btn-block" 
+			data-toggle ="tab" data-target =".actInputForm">
+			Импорт Заключения
+			</button>
+		</div>
+		<div class="col-lg-3 ">
+			<button class="btn-lg btn-info btn-block" 
+			data-toggle ="tab" data-target =".dcmInputForm">
+			Импорт DICOM-файла
+			</button>
+		</div>
+		<div class="col-lg-3 ">
+			<button class="btn-lg btn-info btn-block" 
+			data-toggle ="tab" data-target =".dcmserverInputForm">
+			Импорт DICOM-сервера
+			</button>
+		</div>
+	</div>
+
+	<div class="tab-content">
+		<div class=" tab-pane patientInputForm">
+		<form method="post" action="">
+			{% csrf_token %}
+			{{ patient_form | bootstrap}} 
+			<center><input class = "btn" type="submit" value="Отправить"></center>
+		</form>
+		</div>
+
+		<div class=" tab-pane dcmInputForm">
+		<p>Форма выбора файла dcm</p>
 		</div>
 	</div>
 </div>
-	<form method="post" action="">
-		{% csrf_token %}
-		
-		{{ form | bootstrap}} 
-		
-		<center><input class = "btn" type="submit" value="Отправить"></center>
-	</form>
+
+
 
 {% endblock page %}
