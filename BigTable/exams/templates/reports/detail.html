@@ -1,10 +1,21 @@
 {% extends "base.html" %}
+
+
+
 {% load bootstrap %}
+
+{%block head_additional%}
+	{%block script_css_import%}
+	
+	{%endblock script_css_import%} 
+{%endblock head_additional%}
+
 {% block title %} {{ patient.fio }} {% endblock %}
 
 {%block page%}
 
 <h1>{{ patient.fio }}</h1>
+<p>{{ patient.tags.all }}</p>
 
 <div class='container'> <!-- заметки -->
 
@@ -41,7 +52,7 @@
 			<center><input class="form-control btn btn-success" type="submit" value="Отправить" name = "patient_submit"></center>
 	</form> 
 	</div>
-
+<comment>
 <div class='container'>
 	<!-- поле с именами загруженных картинок разбитое по группам и кнопками "добавить" и "показать"-->
 	{{patient.docs_set.all}}
@@ -55,6 +66,27 @@
 		</div>
 	</form>
 </div>
+</comment>
+
+<div id="fileupload">
+    <form action="{% url 'exams.views.upload' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="fileupload-buttonbar">
+            <label class="fileinput-button">
+                <span>Add files...</span>
+                <input type="file" name="files[]" multiple>
+            </label>
+            <button type="submit" class="start">Start upload</button>
+            <button type="reset" class="cancel">Cancel upload</button>
+            <button type="button" class="delete">Delete files</button>
+        </div>
+    </form>
+    <div class="fileupload-content">
+        <table class="files"></table>
+        <div class="fileupload-progressbar"></div>
+    </div>
+</div>
+
 
 <div class='data1'> <!-- поле "проведенные исследования"-->
 	{% if examinations %}
@@ -111,4 +143,8 @@ $(document).ready(function() {
 	});
 });
 </script>
+
+{%block sub_scripts%}
+{%endblock sub_scripts%}
+{% include "reports/file_upload.html" %}
 {%endblock%}

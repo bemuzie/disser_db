@@ -40,7 +40,7 @@ class DocsForm(forms.ModelForm):
             errors_on_separate_row = False)
     class Meta:
         model = Docs
-        fields =('date','name','group','description','img')
+        fields =('date','img')
         #widget = {'img':mywidgets.MultiFileInput}
 
 

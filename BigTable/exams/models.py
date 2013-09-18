@@ -2,24 +2,42 @@
 from django.db import models
 from django.forms import ModelForm
 from datetime import datetime
+from taggit.managers import TaggableManager
+from taggit.models import Tag, TaggedItem
 # Create your models here.
+
+class CyrillicTag (Tag):
+	class Meta:
+		proxy = True
+	def slugify(self, tag, i=None):
+		slug = tag.lower().replace(' ','-')
+		if i is not None:
+			slug += '-%d' % i
+		return slug
+class CyrillicTagedItem(TaggedItem):
+	class Meta:
+		proxy=True
+	@classmethod
+	def tag_model(cls):
+		return CyrillicTag
+
+
 class Patient(models.Model):
 	fio = models.CharField(max_length = 100)
 	birth_date = models.DateField(blank=True, null=True)
 	weight = models.IntegerField(default =0)
 	clinical_data = models.CharField(max_length = 500)
+	tags = TaggableManager(through=CyrillicTagedItem,blank=True)
 	def __unicode__(self):
 		return self.fio
 
 class Docs(models.Model):
 	patient = models.ForeignKey(Patient,default=0)
 	date = models.DateField(blank=True,null=True)
-	name = models.CharField(max_length = 20)
-	group = models.CharField(max_length = 20)
-	description = models.CharField(max_length = 300)
 	img = models.FileField(upload_to = 'files')
+	tags = TaggableManager(through=CyrillicTagedItem,blank=True)
 	def __unicode__(self):
-		return self.name
+		return unicode(self.img)
 
 
 class ExamParams(models.Model):
@@ -56,6 +74,7 @@ class Examination(models.Model):
 	date = models.DateField(blank=True, null=True)
 	conclusion =  models.CharField(max_length = 1000)
 	patient=models.ForeignKey(Patient,default =0)
+	tags = TaggableManager(through=CyrillicTagedItem,blank=True)
 
 class Reminder(models.Model):
 	CHOICES = {'done':((True,u'Сделано'),
@@ -65,14 +84,10 @@ class Reminder(models.Model):
 	done = models.BooleanField(default=False, choices = CHOICES['done'])
 	patient = models.ForeignKey(Patient,default = 0)
 
-class Tag(models.Model):
-	title = models.CharField(max_length=250)
-	slug = models.SlugField(blank=True)
-
 class TagDictionary(models.Model):
 	word = models.CharField(max_length=250)
 	tag = models.ForeignKey(Tag, default = 0)
-	
+
 
 
 
