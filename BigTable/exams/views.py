@@ -20,9 +20,6 @@ def index(request):
 	reminder_uptodate=[r for r in reminder if r.remind_date>=today]
 	context = RequestContext(request,{'reminder_expired':reminder_expired,
 										'reminder_uptodate':reminder_uptodate})
-	
-
-
 	return HttpResponse(template.render(context))
 
 def patient_list(request):
@@ -39,11 +36,8 @@ def detail(request, patient_id):
 	patient_form = PatientForm_lite(instance=patient)
 	examinations = patient.examination_set.all()
 	docs_form = DocsForm()
-	
-
 	reminder_formset = ReminderFormSet(queryset=Reminder.objects.filter(patient=patient),
 		initial=[{'patient':patient}])
-	
 	
 	if request.POST.get('patient_submit'):
 		
@@ -80,12 +74,13 @@ def detail(request, patient_id):
 
 def add_patient(request):
 	patient_form = PatientForm(request.POST or None)
+	
 	if patient_form.is_valid():
 		patient_form.save()
 
 		return HttpResponseRedirect(reverse('exams.views.detail', args=(patient_form.instance.id,)))
 	return render (request,'reports/add_patient.html',
-		{'form':patient_form,})
+		{'patient_form':patient_form,})
 def new_examination(request, patient_id, examination_id=None):
 	patient = get_object_or_404(Patient, pk=patient_id)
 	if examination_id:
@@ -155,3 +150,7 @@ def delete_patient (request, patient_id):
 		return HttpResponseRedirect(reverse('exams.views.patient_list'))
 	else:
 		raise Http404
+def statistis(request):
+	patients_num = len(Patient.objects.all())
+	examinations_num = len(Examinations.objects.all().filter(modality='P'))
+	
