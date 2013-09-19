@@ -4,6 +4,7 @@ from django.forms import ModelForm
 from datetime import datetime
 from taggit.managers import TaggableManager
 from taggit.models import Tag, TaggedItem
+
 # Create your models here.
 
 class CyrillicTag (Tag):
@@ -87,7 +88,6 @@ class Reminder(models.Model):
 class TagDictionary(models.Model):
 	word = models.CharField(max_length=250)
 	tag = models.ForeignKey(Tag, default = 0)
-
 
 
 

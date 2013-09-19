@@ -135,6 +135,9 @@ INSTALLED_APPS = (
     'south',
     'bootstrapform',
     'taggit',
+    'sorl.thumbnail',
+    'multiuploader',
+
 )
 
 # A sample logging configuration. The only tangible logging
