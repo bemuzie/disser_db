@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load bootstrap %}
+{% load multiuploader %}
 
 {% block title %} Новый пациент {% endblock %}
 {% block page %}
@@ -44,9 +45,14 @@
 		</form>
 		</div>
 
+		<div class=" tab-pane actInputForm">
+		{%include "multiuploader/multiuploader_main.html" with patient_id=patient.id%}
+		</div>
+
 		<div class=" tab-pane dcmInputForm">
 		<p>Форма выбора файла dcm</p>
 		</div>
+
 	</div>
 </div>
 

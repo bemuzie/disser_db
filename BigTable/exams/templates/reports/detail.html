@@ -52,21 +52,16 @@
 			<center><input class="form-control btn btn-success" type="submit" value="Отправить" name = "patient_submit"></center>
 	</form> 
 	</div>
-<comment>
+
 <div class='container'>
 	<!-- поле с именами загруженных картинок разбитое по группам и кнопками "добавить" и "показать"-->
-	{{patient.docs_set.all}}
-	<form class="form-inline" action="" method="post" enctype="multipart/form-data">
-	{%csrf_token%}
+	{%for im in patient.multiuploaderimage_set.all%}
+		<p>{{im.filename}}</p>
 		
-		{{docs_form.inline}}
+	{%endfor%}
 
-		<div class="form-actions">
-			<input type="submit" class="form-control btn btn-primary" value="Загрузить" name="docs_submit">
-		</div>
-	</form>
 </div>
-</comment>
+
 
 <div id="fileupload">
     
