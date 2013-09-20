@@ -1,0 +1,266 @@
+<?xml version="1.0" ?>
+<fittings>
+	<fitting name="Machariel_pve">
+		<description value=""/>
+		<shipType value="Machariel"/>
+	</fitting>
+	<fitting name="Maelstrom_arti">
+		<description value=""/>
+		<shipType value="Maelstrom"/>
+		<hardware slot="low slot 0" type="Republic Fleet Gyrostabilizer"/>
+		<hardware slot="low slot 1" type="Republic Fleet Gyrostabilizer"/>
+		<hardware slot="low slot 2" type="Gyrostabilizer II"/>
+		<hardware slot="low slot 3" type="Tracking Enhancer II"/>
+		<hardware slot="low slot 4" type="Tracking Enhancer II"/>
+		<hardware slot="med slot 0" type="X-Large Ancillary Shield Booster"/>
+		<hardware slot="med slot 1" type="'Stalwart' Particle Field Magnifier"/>
+		<hardware slot="med slot 2" type="EM Ward Field II"/>
+		<hardware slot="med slot 3" type="Kinetic Deflection Field II"/>
+		<hardware slot="med slot 4" type="Thermic Dissipation Field II"/>
+		<hardware slot="med slot 5" type="Experimental 100MN Afterburner I"/>
+		<hardware slot="hi slot 0" type="1400mm 'Scout' Artillery I"/>
+		<hardware slot="hi slot 1" type="1400mm 'Scout' Artillery I"/>
+		<hardware slot="hi slot 2" type="1400mm 'Scout' Artillery I"/>
+		<hardware slot="hi slot 3" type="1400mm 'Scout' Artillery I"/>
+		<hardware slot="hi slot 4" type="1400mm 'Scout' Artillery I"/>
+		<hardware slot="hi slot 5" type="1400mm 'Scout' Artillery I"/>
+		<hardware slot="hi slot 6" type="1400mm 'Scout' Artillery I"/>
+		<hardware slot="hi slot 7" type="1400mm 'Scout' Artillery I"/>
+		<hardware slot="rig slot 0" type="Large Projectile Burst Aerator I"/>
+		<hardware slot="rig slot 1" type="Large Capacitor Control Circuit I"/>
+		<hardware slot="rig slot 2" type="Large Capacitor Control Circuit I"/>
+	</fitting>
+	<fitting name="Maelstrom_cannon">
+		<description value=""/>
+		<shipType value="Maelstrom"/>
+		<hardware slot="low slot 0" type="Republic Fleet Gyrostabilizer"/>
+		<hardware slot="low slot 1" type="Republic Fleet Gyrostabilizer"/>
+		<hardware slot="low slot 2" type="Gyrostabilizer II"/>
+		<hardware slot="low slot 3" type="Tracking Enhancer II"/>
+		<hardware slot="low slot 4" type="Tracking Enhancer II"/>
+		<hardware slot="med slot 0" type="X-Large Ancillary Shield Booster"/>
+		<hardware slot="med slot 1" type="'Stalwart' Particle Field Magnifier"/>
+		<hardware slot="med slot 2" type="EM Ward Field II"/>
+		<hardware slot="med slot 3" type="Kinetic Deflection Field II"/>
+		<hardware slot="med slot 4" type="Thermic Dissipation Field II"/>
+		<hardware slot="med slot 5" type="Prototype 100MN Microwarpdrive I"/>
+		<hardware slot="hi slot 0" type="800mm Heavy 'Scout' Repeating Artillery I"/>
+		<hardware slot="hi slot 1" type="800mm Heavy 'Scout' Repeating Artillery I"/>
+		<hardware slot="hi slot 2" type="800mm Heavy 'Scout' Repeating Artillery I"/>
+		<hardware slot="hi slot 3" type="800mm Heavy 'Scout' Repeating Artillery I"/>
+		<hardware slot="hi slot 4" type="800mm Heavy 'Scout' Repeating Artillery I"/>
+		<hardware slot="hi slot 5" type="800mm Heavy 'Scout' Repeating Artillery I"/>
+		<hardware slot="hi slot 6" type="800mm Heavy 'Scout' Repeating Artillery I"/>
+		<hardware slot="hi slot 7" type="800mm Heavy 'Scout' Repeating Artillery I"/>
+		<hardware slot="rig slot 0" type="Large Projectile Burst Aerator I"/>
+		<hardware slot="rig slot 1" type="Large Capacitor Control Circuit I"/>
+		<hardware slot="rig slot 2" type="Large Capacitor Control Circuit I"/>
+	</fitting>
+	<fitting name="Stabber_pvp">
+		<description value=""/>
+		<shipType value="Stabber"/>
+	</fitting>
+	<fitting name="Bellicose fit">
+		<description value=""/>
+		<shipType value="Bellicose"/>
+	</fitting>
+	<fitting name="Rupture_asb">
+		<description value=""/>
+		<shipType value="Rupture"/>
+		<hardware slot="low slot 0" type="Damage Control II"/>
+		<hardware slot="low slot 1" type="Micro Auxiliary Power Core II"/>
+		<hardware slot="low slot 2" type="Tracking Enhancer II"/>
+		<hardware slot="low slot 3" type="Gyrostabilizer II"/>
+		<hardware slot="low slot 4" type="Gyrostabilizer II"/>
+		<hardware slot="med slot 0" type="X-Large Ancillary Shield Booster"/>
+		<hardware slot="med slot 1" type="Warp Scrambler II"/>
+		<hardware slot="med slot 2" type="Experimental 10MN Microwarpdrive I"/>
+		<hardware slot="hi slot 0" type="425mm AutoCannon II"/>
+		<hardware slot="hi slot 1" type="425mm AutoCannon II"/>
+		<hardware slot="hi slot 2" type="425mm AutoCannon II"/>
+		<hardware slot="hi slot 3" type="425mm AutoCannon II"/>
+		<hardware slot="rig slot 0" type="Medium Anti-EM Screen Reinforcer I"/>
+		<hardware slot="rig slot 1" type="Medium Anti-EM Screen Reinforcer I"/>
+		<hardware slot="rig slot 2" type="Medium Processor Overclocking Unit I"/>
+	</fitting>
+	<fitting name="Mega Lord">
+		<description value=""/>
+		<shipType value="Thorax"/>
+		<hardware slot="low slot 0" type="1600mm Reinforced Rolled Tungsten Plates I"/>
+		<hardware slot="low slot 1" type="Damage Control II"/>
+		<hardware slot="low slot 2" type="Energized Explosive Membrane II"/>
+		<hardware slot="low slot 3" type="Magnetic Field Stabilizer II"/>
+		<hardware slot="low slot 4" type="Power Diagnostic System II"/>
+		<hardware slot="med slot 0" type="Experimental 10MN Microwarpdrive I"/>
+		<hardware slot="med slot 1" type="Warp Disruptor II"/>
+		<hardware slot="med slot 2" type="X5 Prototype Engine Enervator"/>
+		<hardware slot="hi slot 0" type="Heavy Electron Blaster II"/>
+		<hardware slot="hi slot 1" type="Heavy Electron Blaster II"/>
+		<hardware slot="hi slot 2" type="Heavy Electron Blaster II"/>
+		<hardware slot="hi slot 3" type="Heavy Electron Blaster II"/>
+		<hardware slot="hi slot 4" type="Heavy Electron Blaster II"/>
+		<hardware slot="rig slot 0" type="Medium Trimark Armor Pump I"/>
+		<hardware slot="rig slot 1" type="Medium Trimark Armor Pump I"/>
+		<hardware slot="rig slot 2" type="Medium Trimark Armor Pump I"/>
+	</fitting>
+	<fitting name="welp">
+		<description value=""/>
+		<shipType value="Hurricane"/>
+		<hardware slot="low slot 0" type="Gyrostabilizer II"/>
+		<hardware slot="low slot 1" type="Gyrostabilizer II"/>
+		<hardware slot="low slot 2" type="Tracking Enhancer II"/>
+		<hardware slot="low slot 3" type="Damage Control II"/>
+		<hardware slot="low slot 4" type="Tracking Enhancer II"/>
+		<hardware slot="low slot 5" type="Nanofiber Internal Structure II"/>
+		<hardware slot="med slot 0" type="Large Shield Extender II"/>
+		<hardware slot="med slot 1" type="Large Shield Extender II"/>
+		<hardware slot="med slot 2" type="Experimental 10MN Microwarpdrive I"/>
+		<hardware slot="med slot 3" type="Warp Disruptor II"/>
+		<hardware slot="hi slot 0" type="425mm AutoCannon II"/>
+		<hardware slot="hi slot 1" type="425mm AutoCannon II"/>
+		<hardware slot="hi slot 2" type="425mm AutoCannon II"/>
+		<hardware slot="hi slot 3" type="425mm AutoCannon II"/>
+		<hardware slot="hi slot 4" type="425mm AutoCannon II"/>
+		<hardware slot="hi slot 5" type="425mm AutoCannon II"/>
+		<hardware slot="hi slot 6" type="50W Infectious Power System Malfunction"/>
+		<hardware slot="hi slot 7" type="50W Infectious Power System Malfunction"/>
+		<hardware slot="rig slot 0" type="Medium Core Defense Field Extender I"/>
+		<hardware slot="rig slot 1" type="Medium Core Defense Field Extender I"/>
+		<hardware slot="rig slot 2" type="Medium Core Defense Field Extender I"/>
+	</fitting>
+	<fitting name="Rupture_arti">
+		<description value=""/>
+		<shipType value="Rupture"/>
+		<hardware slot="low slot 0" type="Damage Control II"/>
+		<hardware slot="low slot 1" type="Gyrostabilizer II"/>
+		<hardware slot="low slot 2" type="Tracking Enhancer II"/>
+		<hardware slot="low slot 3" type="Tracking Enhancer II"/>
+		<hardware slot="low slot 4" type="Reactor Control Unit II"/>
+		<hardware slot="med slot 0" type="Experimental 10MN Microwarpdrive I"/>
+		<hardware slot="med slot 1" type="Sensor Booster II"/>
+		<hardware slot="med slot 2" type="Sensor Booster II"/>
+		<hardware slot="hi slot 0" type="720mm Howitzer Artillery II"/>
+		<hardware slot="hi slot 1" type="720mm Howitzer Artillery II"/>
+		<hardware slot="hi slot 2" type="720mm Howitzer Artillery II"/>
+		<hardware slot="hi slot 3" type="720mm Howitzer Artillery II"/>
+		<hardware slot="hi slot 4" type="Salvager I"/>
+		<hardware slot="hi slot 5" type="Prototype Cloaking Device I"/>
+		<hardware slot="rig slot 0" type="Medium Anti-Explosive Pump I"/>
+		<hardware slot="rig slot 1" type="Medium Anti-Kinetic Pump I"/>
+		<hardware slot="rig slot 2" type="Medium Low Friction Nozzle Joints I"/>
+	</fitting>
+	<fitting name="Fittings.">
+		<description value=""/>
+		<shipType value="Loki"/>
+		<hardware slot="low slot 0" type="Tracking Enhancer II"/>
+		<hardware slot="low slot 1" type="Damage Control II"/>
+		<hardware slot="low slot 2" type="Gyrostabilizer II"/>
+		<hardware slot="low slot 3" type="Gyrostabilizer II"/>
+		<hardware slot="low slot 4" type="Gyrostabilizer II"/>
+		<hardware slot="med slot 0" type="Warp Disruptor II"/>
+		<hardware slot="med slot 1" type="10MN Microwarpdrive II"/>
+		<hardware slot="med slot 2" type="Federation Navy Stasis Webifier"/>
+		<hardware slot="med slot 3" type="Large Shield Extender II"/>
+		<hardware slot="hi slot 0" type="220mm Vulcan AutoCannon II"/>
+		<hardware slot="hi slot 1" type="220mm Vulcan AutoCannon II"/>
+		<hardware slot="hi slot 2" type="220mm Vulcan AutoCannon II"/>
+		<hardware slot="hi slot 3" type="220mm Vulcan AutoCannon II"/>
+		<hardware slot="hi slot 4" type="220mm Vulcan AutoCannon II"/>
+		<hardware slot="hi slot 5" type="Covert Ops Cloaking Device II"/>
+		<hardware slot="hi slot 6" type="Medium Unstable Power Fluctuator I"/>
+		<hardware slot="rig slot 0" type="Medium Core Defense Field Extender I"/>
+		<hardware slot="rig slot 1" type="Medium Core Defense Field Extender I"/>
+		<hardware slot="rig slot 2" type="Medium Core Defense Field Extender I"/>
+		<hardware slot="subsystem slot 0" type="Loki Defensive - Adaptive Shielding"/>
+		<hardware slot="subsystem slot 1" type="Loki Electronics - Immobility Drivers"/>
+		<hardware slot="subsystem slot 2" type="Loki Propulsion - Chassis Optimization"/>
+		<hardware slot="subsystem slot 3" type="Loki Offensive - Covert Reconfiguration"/>
+		<hardware slot="subsystem slot 4" type="Loki Engineering - Augmented Capacitor Reservoir"/>
+	</fitting>
+	<fitting name="2xasb">
+		<description value=""/>
+		<shipType value="Cyclone"/>
+		<hardware slot="low slot 0" type="Co-Processor II"/>
+		<hardware slot="low slot 1" type="Damage Control II"/>
+		<hardware slot="low slot 2" type="Reactor Control Unit II"/>
+		<hardware slot="low slot 3" type="Gyrostabilizer II"/>
+		<hardware slot="med slot 0" type="Warp Scrambler II"/>
+		<hardware slot="med slot 1" type="Large Ancillary Shield Booster"/>
+		<hardware slot="med slot 2" type="Experimental 10MN Microwarpdrive I"/>
+		<hardware slot="med slot 3" type="X-Large Ancillary Shield Booster"/>
+		<hardware slot="med slot 4" type="Adaptive Invulnerability Field II"/>
+		<hardware slot="hi slot 0" type="220mm Vulcan AutoCannon II"/>
+		<hardware slot="hi slot 1" type="220mm Vulcan AutoCannon II"/>
+		<hardware slot="hi slot 2" type="220mm Vulcan AutoCannon II"/>
+		<hardware slot="hi slot 3" type="220mm Vulcan AutoCannon II"/>
+		<hardware slot="hi slot 4" type="220mm Vulcan AutoCannon II"/>
+		<hardware slot="hi slot 5" type="Prototype 'Arbalest' Heavy Assault Missile Launcher I"/>
+		<hardware slot="hi slot 6" type="Prototype 'Arbalest' Heavy Assault Missile Launcher I"/>
+		<hardware slot="hi slot 7" type="Prototype 'Arbalest' Heavy Assault Missile Launcher I"/>
+		<hardware slot="rig slot 0" type="Medium Projectile Burst Aerator I"/>
+		<hardware slot="rig slot 1" type="Medium Processor Overclocking Unit I"/>
+		<hardware slot="rig slot 2" type="Medium Anti-EM Screen Reinforcer I"/>
+	</fitting>
+	<fitting name="Drake_hams">
+		<description value=""/>
+		<shipType value="Drake"/>
+		<hardware slot="low slot 0" type="Damage Control II"/>
+		<hardware slot="med slot 0" type="Large Shield Extender II"/>
+		<hardware slot="med slot 1" type="Adaptive Invulnerability Field II"/>
+		<hardware slot="med slot 2" type="Adaptive Invulnerability Field II"/>
+		<hardware slot="med slot 3" type="Experimental 10MN Microwarpdrive I"/>
+		<hardware slot="med slot 4" type="Warp Disruptor II"/>
+		<hardware slot="rig slot 0" type="Medium Core Defense Field Extender I"/>
+		<hardware slot="rig slot 1" type="Medium Core Defense Field Extender I"/>
+		<hardware slot="rig slot 2" type="Medium Core Defense Field Extender I"/>
+	</fitting>
+	<fitting name="Naglfar fit">
+		<description value=""/>
+		<shipType value="Naglfar"/>
+	</fitting>
+	<fitting name="Reaper fit">
+		<description value=""/>
+		<shipType value="Reaper"/>
+		<hardware slot="low slot 0" type="F-M2 Weapon Inertial Suspensor"/>
+		<hardware slot="low slot 1" type="F-M2 Weapon Inertial Suspensor"/>
+		<hardware slot="med slot 0" type="Medium Ancillary Shield Booster"/>
+		<hardware slot="med slot 1" type="Caldari Navy Warp Scrambler"/>
+		<hardware slot="hi slot 0" type="150mm Light AutoCannon II"/>
+		<hardware slot="hi slot 1" type="150mm Light AutoCannon II"/>
+		<hardware qty="1" slot="drone bay" type="Warrior II"/>
+	</fitting>
+	<fitting name="Rifter fit">
+		<description value=""/>
+		<shipType value="Rifter"/>
+		<hardware slot="low slot 0" type="Gyrostabilizer II"/>
+		<hardware slot="low slot 1" type="Gyrostabilizer II"/>
+		<hardware slot="hi slot 0" type="200mm AutoCannon II"/>
+		<hardware slot="hi slot 1" type="200mm AutoCannon II"/>
+		<hardware slot="hi slot 2" type="200mm AutoCannon II"/>
+		<hardware slot="hi slot 3" type="Rocket Launcher II"/>
+	</fitting>
+	<fitting name="2xasb copy">
+		<description value=""/>
+		<shipType value="Cyclone"/>
+		<hardware slot="low slot 0" type="Co-Processor II"/>
+		<hardware slot="low slot 1" type="Damage Control II"/>
+		<hardware slot="low slot 2" type="Reactor Control Unit II"/>
+		<hardware slot="low slot 3" type="Gyrostabilizer II"/>
+		<hardware slot="med slot 0" type="J5b Phased Prototype Warp Scrambler I"/>
+		<hardware slot="med slot 1" type="Large Shield Extender II"/>
+		<hardware slot="med slot 2" type="Experimental 10MN Microwarpdrive I"/>
+		<hardware slot="med slot 3" type="X-Large Ancillary Shield Booster"/>
+		<hardware slot="med slot 4" type="Adaptive Invulnerability Field II"/>
+		<hardware slot="hi slot 0" type="220mm Vulcan AutoCannon II"/>
+		<hardware slot="hi slot 1" type="220mm Vulcan AutoCannon II"/>
+		<hardware slot="hi slot 2" type="220mm Vulcan AutoCannon II"/>
+		<hardware slot="hi slot 3" type="220mm Vulcan AutoCannon II"/>
+		<hardware slot="hi slot 4" type="220mm Vulcan AutoCannon II"/>
+		<hardware slot="hi slot 5" type="Prototype 'Arbalest' Heavy Assault Missile Launcher I"/>
+		<hardware slot="hi slot 6" type="Medium 'Vehemence' Shockwave Charge"/>
+		<hardware slot="hi slot 7" type="Prototype 'Arbalest' Heavy Assault Missile Launcher I"/>
+		<hardware slot="rig slot 0" type="Medium Projectile Collision Accelerator I"/>
+		<hardware slot="rig slot 1" type="Medium Processor Overclocking Unit I"/>
+		<hardware slot="rig slot 2" type="Medium Anti-EM Screen Reinforcer I"/>
+	</fitting>
+</fittings>
