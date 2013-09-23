@@ -60,7 +60,7 @@ def multiuploader(request, patient_id=None):
         #because we don't need form of any type.
         print request.POST
         if not patient_id:
-            
+            pass
         
         image = MultiuploaderImage()
         patient=Patient.objects.get(pk=patient_id)
@@ -108,7 +108,8 @@ def multiuploader(request, patient_id=None):
             mimetype = 'application/json'
         else:
             mimetype = 'text/plain'
-        return HttpResponse(response_data, mimetype=mimetype)
+        return HttpResponse(status=204)
+            #response_data, mimetype=mimetype)
     else: #GETim
         return HttpResponse('Only POST accepted')
 

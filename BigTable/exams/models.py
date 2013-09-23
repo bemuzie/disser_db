@@ -75,7 +75,7 @@ class Examination(models.Model):
 	date = models.DateField(blank=True, null=True)
 	conclusion =  models.CharField(max_length = 1000)
 	patient=models.ForeignKey(Patient,default =0)
-	tags = TaggableManager(through=CyrillicTagedItem,blank=True)
+	
 
 class Reminder(models.Model):
 	CHOICES = {'done':((True,u'Сделано'),

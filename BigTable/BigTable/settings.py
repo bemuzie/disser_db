@@ -86,6 +86,7 @@ STATICFILES_DIRS = ( os.path.join(os.path.dirname(__file__), "static"),
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'dajaxice.finders.DajaxiceFinder'
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
@@ -96,7 +97,7 @@ SECRET_KEY = 'i90q$#i#5e-#oro0fjt8rdhw4v77!z5gmv7y5s2i$_-w4&!+ly'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -137,7 +138,8 @@ INSTALLED_APPS = (
     'taggit',
     'sorl.thumbnail',
     'multiuploader',
-
+    'dajaxice', 
+    'dajax', 
 )
 
 # A sample logging configuration. The only tangible logging
@@ -168,3 +170,14 @@ LOGGING = {
         },
     }
 }
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.request',
+    'django.core.context_processors.static',
+    'django.contrib.messages.context_processors.messages',
+)
+
+DAJAXICE_MEDIA_PREFIX="dajaxice"

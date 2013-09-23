@@ -14,5 +14,6 @@ urlpatterns = patterns('',
     url(r'^(?P<patient_id>\d+)/modify_reminder',views.modify_reminder,name='detail2'),
     url(r'^(?P<patient_id>\d+)/delete',views.delete_patient,name='deletion'),
     url(r'^(?P<patient_id>\d+)/upload/',include('multiuploader.urls')),
+    url(r'^new/upload/',include('multiuploader.urls'))
 
 )

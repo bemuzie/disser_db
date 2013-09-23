@@ -15,6 +15,7 @@ import os
 
 from exams.models import *
 from exams.forms import *
+from exams import decorators
 
 
 def index(request):
@@ -49,6 +50,7 @@ def detail(request, patient_id):
 		patient_form = PatientForm_lite(request.POST or None,instance=patient)
 		if patient_form.is_valid():
 			patient_form.save()
+
 			patient_form = PatientForm_lite(instance=patient)
 			return HttpResponseRedirect(reverse('exams.views.detail', args=(patient.id,)))
 	elif request.POST.get('docs_submit'):
@@ -78,11 +80,10 @@ def detail(request, patient_id):
 												})
 
 def add_patient(request):
-	patient_form = PatientForm(request.POST or None)
 	
+	patient_form = PatientForm(request.POST or None)
 	if patient_form.is_valid():
 		patient_form.save()
-
 		return HttpResponseRedirect(reverse('exams.views.detail', args=(patient_form.instance.id,)))
 	return render (request,'reports/add_patient.html',
 		{'patient_form':patient_form,})
@@ -112,14 +113,16 @@ def modify_examination(request, patient_id, examination_id):
 		return HttpResponseRedirect(reverse('exams.views.new_examination', args=(patient_id,examination_id)))
 	else:
 		raise Http404
-
+@decorators.example
 def modify_reminder(request, patient_id):
 	
 	patient = get_object_or_404(Patient, pk=patient_id)
-	reminder_form = ReminderForm(request.POST)
+	reminder_form = ReminderForm(request.POST or None)
 	if request.POST.get("new_reminder"):
 		reminder_formset = ReminderFormSet(request.POST)
+		print 'before'
 		if reminder_formset.is_valid():
+			print 'after'
 			reminder_formset.save(commit=False)
 			for f in reminder_formset:
 				f.patient=patient
@@ -134,6 +137,7 @@ def modify_reminder(request, patient_id):
 			reminder_formset = ReminderFormSet(queryset=Reminder.objects.filter(patient=patient),
 				initial=[{'patient':patient}])
 			return HttpResponseRedirect(reverse('exams.views.detail', args=(patient.id,)))
+	
 
 	if request.POST.get("change_reminder"):
 		reminder = patient.reminder_set.get(pk=request.POST.get("change_reminder"))
@@ -146,8 +150,9 @@ def modify_reminder(request, patient_id):
 		
 		patient.reminder_set.get(pk=request.POST.get("delete_reminder")).delete()
 		return HttpResponseRedirect(reverse('exams.views.detail', args=(patient.id,)))
+	return detail(request, patient_id)
+		
 
-		return HttpResponse(status=204)
 def delete_patient (request, patient_id):
 	if request.POST:
 		patient = get_object_or_404(Patient, pk=patient_id)
@@ -378,3 +383,4 @@ def upload(request):
         c.update(csrf(request))
         # return
         return HttpResponse(t.render(c))
+
