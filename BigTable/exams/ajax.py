@@ -5,6 +5,7 @@ from dajaxice.decorators import dajaxice_register
 from dajaxice.utils import deserialize_form
 from dajax.core import Dajax
 
+
 @dajaxice_register
 def primer(request,message):
     return_message=u'Полученное сообщение: {0}'.format(message)
@@ -16,7 +17,8 @@ def print_field(request,message):
 
 	
 	#if field.is_valid():
-	dajax.alert(deserialize_form(message))
+	dajax.alert(deserialize_form(message)['clinical_data'])
+	print deserialize_form(message)
 	#dajax.alert(field)
 	return dajax.json()
 	
