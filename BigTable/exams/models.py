@@ -8,9 +8,12 @@ from taggit.models import Tag, TaggedItem
 # Create your models here.
 
 class CyrillicTag (Tag):
+
 	class Meta:
 		proxy = True
 	def slugify(self, tag, i=None):
+		print type(tag)
+		print tag, i
 		slug = tag.lower().replace(' ','-')
 		if i is not None:
 			slug += '-%d' % i
@@ -87,7 +90,8 @@ class Reminder(models.Model):
 
 class TagDictionary(models.Model):
 	word = models.CharField(max_length=250)
-	tag = models.ForeignKey(Tag, default = 0)
-
+	tag = models.ForeignKey(CyrillicTag, default = 0)
+	def __unicode__(self):
+		return self.word
 
 

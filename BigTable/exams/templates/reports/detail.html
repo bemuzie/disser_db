@@ -40,7 +40,7 @@
 
 </div>
 
-<div class='container'> <!-- заметки -->
+<div class='container' id="patient_tags"> <!-- заметки -->
 	{%for tag in patient.tags.all%}
 	{{tag}}
 	{%endfor%}
@@ -48,7 +48,7 @@
 </div>
 
 <div class='container'> <!-- Клинические данные -->
-	<form action="" method="post" name='patient'>
+	<form action="" method="post" name='patient' id="patient">
 	{%csrf_token%}
 				<table>
 	
@@ -109,23 +109,6 @@
 
 
 
-<input onclick="Dajaxice.exams.primer(primer_callback,{'message':'Хэллоу Уорлд!'});" type="button" value="Push Me!" />
-
-<script type="text/javascript">
-	function primer_callback(data){
-		alert(data.message);
-	}
-</script>
-
-<input onclick="Dajaxice.exams.primer(primer_callback,{'message':'Хэллоу Уорлд!'});" type="button" value="Push Me!" />
-
-<script type="text/javascript">
-	function primer_callback(data){
-		alert(data.message);
-	}
-</script>
-
-
 {%endblock page%}
 
 {% block scripts %}
@@ -155,8 +138,8 @@ $(document).ready(function() {
 });
 </script>
 <script type="text/javascript">
-	$('textarea').change(function() {
-		Dajaxice.exams.print_field(Dajax.process,{'message':$(this).serialize(true)});
+	$('#patient input, #patient textarea' ).change(function() {
+		Dajaxice.exams.print_field(Dajax.process,{'message':$("#patient").serialize(true),'patient_id':{{patient.id}} });
  		 
 	});
 	
