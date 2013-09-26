@@ -15,7 +15,7 @@
 {%block page%}
 
 <h1>{{ patient.fio }}</h1>
-<p>{{ patient.tags.all }}</p>
+
 
 <div class='container'> <!-- напоминания -->
 
@@ -50,14 +50,7 @@
 <div class='container'> <!-- Клинические данные -->
 	<form action="" method="post" name='patient' id="patient">
 	{%csrf_token%}
-				<table>
-	
-				
-				{{patient_form | bootstrap}}
-
-				
-			</table><br>
-			<center><input class="form-control btn btn-success" type="submit" value="Отправить" name = "patient_submit"></center>
+	{{patient_form | bootstrap}}
 	</form> 
 	</div>
 

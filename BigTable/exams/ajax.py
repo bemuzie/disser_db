@@ -25,9 +25,11 @@ def print_field(request,message,patient_id):
 	if form.is_valid():
 		dajax.remove_css_class('#patient div', 'has-error')
 		form.save()
-
+		print patient.clinical_data.lower()
 		for tag in TagDictionary.objects.all():
-			if tag.word in patient.clinical_data:
+			print tag.word,tag.tag
+			if tag.word in patient.clinical_data.lower():
+				print 1,tag.word,tag.tag
 				patient.tags.add(tag.tag)
 		dajax.script("""$('#patient_tags').html('<p> %s</p>')
 					"""%(', '.join(patient.tags.names() )))		
