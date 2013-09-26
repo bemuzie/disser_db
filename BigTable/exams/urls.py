@@ -13,7 +13,7 @@ urlpatterns = patterns('',
     url(r'^(?P<patient_id>\d+)/(?P<examination_id>\d+)/modify_examination',views.modify_examination,name='detail2'),
     url(r'^(?P<patient_id>\d+)/modify_reminder',views.modify_reminder,name='detail2'),
     url(r'^(?P<patient_id>\d+)/delete',views.delete_patient,name='deletion'),
-    url(r'^(?P<patient_id>\d+)/upload/',include('multiuploader.urls')),
-    url(r'^new/upload/',include('multiuploader.urls'))
+    url(r'^(?P<patient_id>\d+|new)/upload/',include('multiuploader.urls')),
+    
 
 )

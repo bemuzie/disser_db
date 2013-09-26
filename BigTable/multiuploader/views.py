@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.shortcuts import get_object_or_404, render_to_response
 from django.conf import settings
 from django.http import HttpResponse, HttpResponseBadRequest
@@ -59,8 +61,9 @@ def multiuploader(request, patient_id=None):
         #writing file manually into model
         #because we don't need form of any type.
         print request.POST
-        if not patient_id:
-            pass
+        if patient_id=='new':
+            print wrapped_file.read()
+            return HttpResponse(status=204)
         
         image = MultiuploaderImage()
         patient=Patient.objects.get(pk=patient_id)
@@ -119,4 +122,22 @@ def multi_show_uploaded(request, key):
     image = get_object_or_404(MultiuploaderImage, key_data=key)
     url = settings.MEDIA_URL+image.image.name
     return render_to_response('multiuploader/one_image.html', {"multi_single_url":url,})
+"""
+def act_parser(act_file):
+    f=open(act_file)
+    f_list = f.readlines()
+    def extract_date(s):
+        pass
+    def extract_text(s):
+        pass
+    prefixes=dict(fio=[extract_text,['фио']],
+                birthdate=[extract_date,['год рождения','дата рождения']],
+                clinicaldata=[extract_date,['клинические данные']],
+                examinationdate=[extract_text,['дата исследования']])
+    for l in f_list:
+        for pfx_n, pfx_w in prefixes.items():
+            if any([i in l for i in pfx_w[1]]):
+                result[pfx_n]=pfx_w[0](l)
 
+    result=dict(fio=fio,birthdate=birthdate,clinicaldata=clinicaldata,examinationdate=examinationdate)
+"""
