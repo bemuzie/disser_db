@@ -14,6 +14,7 @@ from datetime import date
 import os
 import cStringIO as StringIO
 from reportlab.pdfgen import canvas
+from reportlab.pdfbase import ttfonts,pdfmetrics
 from exams.models import *
 from exams.forms import *
 from exams import decorators
@@ -106,21 +107,91 @@ def modify_examination(request, patient_id, examination_id):
     elif request.POST.get('modify'):
         return HttpResponseRedirect(reverse('exams.views.new_examination', args=(patient_id,examination_id)))
     elif request.POST.get('download'):
+        patient = get_object_or_404(Patient, pk=patient_id)
+        examination = patient.examination_set.get(pk=examination_id)
+
         response = HttpResponse(mimetype='application/pdf')
         response['Content-Disposition'] = 'attachment; filename=somefilename.pdf'
 
         buffer = StringIO.StringIO()
+        from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
+        from reportlab.lib.pagesizes import letter
+        from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+        from reportlab.lib.units import inch
+        from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER
+        MyFontObject = ttfonts.TTFont('Serif', 'Tinos-regular.ttf')
+        MyFontObject2 = ttfonts.TTFont('SerifHeader', 'Oranienbaum.ttf')
+        pdfmetrics.registerFont(MyFontObject)
+        pdfmetrics.registerFont(MyFontObject2)
+
+        doc = SimpleDocTemplate(buffer,pagesize=letter,
+                        rightMargin=72,leftMargin=72,
+                        topMargin=52,bottomMargin=18)
+        #doc.setFont("Arial", 40)
+        styles=getSampleStyleSheet()
+        styles.add(ParagraphStyle(name='Justify',
+                                alignment=TA_JUSTIFY,
+                                fontName="Serif",
+                                fontSize=12,
+                                leading = 14
+                                ))
+        styles.add(ParagraphStyle(name='Header1',
+                                 alignment=TA_CENTER,
+                                 fontName="SerifHeader",
+                                 fontSize=14,
+                                 leading = 16
+                                 ))
+        
 
         # Create the PDF object, using the StringIO object as its "file."
-        p = canvas.Canvas(buffer)
 
-        # Draw things on the PDF. Here's where the PDF generation happens.
-        # See the ReportLab documentation for the full list of functionality.
-        p.drawString(100, 100, "Hello world.")
+
+        print [patient.fio,
+                    patient.birth_date.__str__(),
+                    examination.date.__str__(),
+                    examination.modality,
+                    examination.ce_agent,
+                    patient.clinical_data,]
+        data_text=u""" 
+                <font color=(0.25,0.25,0.25) fontName=SerifHeader > Ф.И.О.:</font> %s \n
+                <font color=(0.25,0.25,0.25) fontName=SerifHeader > Год рождения: </font> %s \n
+                <font color=(0.25,0.25,0.25) fontName=SerifHeader > Дата исследования: </font> %s \n
+                <font color=(0.25,0.25,0.25) fontName=SerifHeader > Область исследования: </font>%s \n
+                <font color=(0.25,0.25,0.25) fontName=SerifHeader > Контрастирование: </font>%s \n
+                <font color=(0.25,0.25,0.25) fontName=SerifHeader > Клинические данные: </font>%s \n
+                """%(patient.fio,
+                    patient.birth_date,
+                    examination.date,
+                    examination.modality,
+                    examination.ce_agent,
+                    patient.clinical_data,
+                    )                       
+        output_text=[]
+
+        output_text.append(Paragraph(
+            "РОССИЙСКИЙ НАУЧНЫЙ ЦЕНТР РАДИОЛОГИИ И ХИРУРГИЧЕСКИХ ТЕХНОЛОГИЙ"
+            ,styles["Header1"]))
+        output_text.append(Paragraph(
+            "Отделение компьютерной томографии"
+            ,styles["Header1"]))
+        output_text.append(Spacer(1, 22))
+        
+        for i in data_text.split('\n'):
+            output_text.append(Paragraph(i, styles["Justify"]))
+        
+        output_text.append(Spacer(1, 12))
+        output_text.append(Paragraph(u"Протокол:", styles["Justify"]))
+        output_text.append(Spacer(1, 12))
+        for i in examination.conclusion.split("\n"):
+            output_text.append(Paragraph(i, styles["Justify"]))
+        
+        doc.build(output_text)
+        
+
 
         # Close the PDF object cleanly.
-        p.showPage()
-        p.save()
+        #p.showPage()
+        #p.save()
 
         # Get the value of the StringIO buffer and write it to the response.
         pdf = buffer.getvalue()
