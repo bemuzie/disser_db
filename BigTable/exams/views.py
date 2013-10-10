@@ -119,7 +119,7 @@ def modify_examination(request, patient_id, examination_id):
         from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
         from reportlab.lib.units import inch
         from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER
-        MyFontObject = ttfonts.TTFont('Serif', 'Tinos-regular.ttf')
+        MyFontObject = ttfonts.TTFont('Serif', 'Tinos-Regular.ttf')
         MyFontObject2 = ttfonts.TTFont('SerifHeader', 'Oranienbaum.ttf')
         pdfmetrics.registerFont(MyFontObject)
         pdfmetrics.registerFont(MyFontObject2)

@@ -55,6 +55,17 @@
 	</div>
 
 <div class='container'>
+<div class='container'> <!-- Клинические данные -->
+	<form action="" method="post" name='patient' id="patient">
+	{%csrf_token%}
+	{{patient_form | bootstrap}}
+	</form> 
+	</div>
+
+<div class='container'>
+
+
+
 	<!-- поле с именами загруженных картинок разбитое по группам и кнопками "добавить" и "показать"-->
 	{%for im in patient.multiuploaderimage_set.all%}
 		<p>{{im.filename}}</p>

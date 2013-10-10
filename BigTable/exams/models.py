@@ -29,12 +29,16 @@ class CyrillicTagedItem(TaggedItem):
 class Patient(models.Model):
 	fio = models.CharField(max_length = 100)
 	birth_date = models.DateField(blank=True, null=True)
-	weight = models.IntegerField(default =0)
+	weight = models.IntegerField(blank=True, null=True)
 	clinical_data = models.CharField(max_length = 500)
 	tags = TaggableManager(through=CyrillicTagedItem,blank=True)
 	def __unicode__(self):
 		return self.fio
-
+class ClinicalData(models.Model):
+	patient = models.ForeignKey(Patient,default=0)
+	date = models.DateField(blank=True,null=True)
+	text = models.CharField(max_length = 500)
+	value = models.IntegerField(blank=True, null=True)
 class Docs(models.Model):
 	patient = models.ForeignKey(Patient,default=0)
 	date = models.DateField(blank=True,null=True)
@@ -42,11 +46,6 @@ class Docs(models.Model):
 	tags = TaggableManager(through=CyrillicTagedItem,blank=True)
 	def __unicode__(self):
 		return unicode(self.img)
-
-
-class ExamParams(models.Model):
-	modality = models.CharField(max_length = 100)
-	dcm_dump = models.CharField(max_length = 100)
 
 class PerfusionCT(models.Model):
 	data = models.CharField(max_length = 100)
@@ -76,7 +75,8 @@ class Examination(models.Model):
 	ce_water_volume = models.IntegerField(default =0)
 	ce_water_speed = models.IntegerField(default =0)
 	date = models.DateField(blank=True, null=True)
-	conclusion =  models.CharField(max_length = 1000)
+	act =  models.CharField(max_length = 4000, null=True)
+	conclusion =  models.CharField(max_length = 1000, null=True)
 	patient=models.ForeignKey(Patient,default =0)
 	
 
