@@ -20,7 +20,7 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
     url(r'^reports/', include('exams.urls')),
-    url(r'^perfetc/', include('perfetc.urls')),
+    
     url(r'^static/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
     (dajaxice_config.dajaxice_url, include('dajaxice.urls')),
 )
