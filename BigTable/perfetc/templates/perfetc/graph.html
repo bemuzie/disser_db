@@ -1,7 +1,15 @@
 {% extends "base.html" %}
 {%block page%}
-<div id="canvas"></div>
-<div id="myfirstchart" style="height: 250px;"></div>
+<div class='row'>
+	<div  class="col-xs-12 col-sm-6 col-lg-6">
+	
+		<canvas id="graph" style="margin-right: auto; margin-left: auto;"></canvas>
+	</div>
+	<div class="col-xs-12 col-sm-6 col-lg-6" id="myfirstchart" style="height: 250px;"></div>
+</div>
+<div>
+
+</div>
 
 
 {% load dajaxice_templatetags %}{% dajaxice_js_import %}
@@ -9,10 +17,10 @@
 
 
 {% block scripts %}
-<script type="text/javascript" src="/static/js/jquery.jsPlumb-1.5.0-min.js "></script>
+
 <script type="text/javascript" src="/static/js/dracula/raphael-min.js"></script>
-<script type="text/javascript" src="/static/js/dracula/dracula_graffle.js"></script>
-<script type="text/javascript" src="/static/js/dracula/dracula_graph.js"></script>
+<script type="text/javascript" src="/static/js/springy.js"></script>
+<script type="text/javascript" src="/static/js/springyui.js"></script>
 <script src="http://cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
 
 
@@ -26,7 +34,7 @@ new Morris.Line({
   // Chart data records -- each entry in this array corresponds to a point on
   // the chart.
   data: [
-    { year: '2008', value: 20 },
+    { year: '2006', value: 20 },
     { year: '2009', value: 10 },
     { year: '2010', value: 5 },
     { year: '2011', value: 5 },
@@ -46,28 +54,9 @@ new Morris.Line({
 	
 	$(document).ready(function() {
 Dajaxice.perfetc.show_graph(Dajax.process,{'body_model_id':{{bodymodel.examination}} });    
-
-
-
 });
 </script>	
-<script type="text/javascript">
-$(document).bind('DOMSubtreeModified', function(){ 
-//console.log('foo');
-	
-	$('svg').on("click",  function() {
-		console.log('foo');
-	});
-	
 
-});
-</script>
-<script type="text/javascript">
 
-$(document).on('click','ellipse', function() {
-	console.log('foo');
-});
-
-</script>
 
 {% endblock scripts %}
