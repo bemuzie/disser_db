@@ -8,7 +8,9 @@
 	<div class="col-xs-12 col-sm-6 col-lg-6" id="myfirstchart" style="height: 250px;"></div>
 </div>
 <div>
-
+<form class = "form-horizontal" action="" method="post" name='compartment'>{%csrf_token%}
+{{compartment_form}}
+</form>
 </div>
 
 
@@ -56,6 +58,21 @@ new Morris.Line({
 Dajaxice.perfetc.show_graph(Dajax.process,{'body_model_id':{{bodymodel.examination}} });    
 });
 </script>	
+<script>
+var graph = new Springy.Graph();
+//var graphJSON = [];
+//graph.loadJSON(graphJSON);
+jQuery(function (){
+  var springy = jQuery('#graph').springy({
+  graph: graph,
+  nodeSelected: function (node) {
+    console.log(node);
+    Dajaxice.perfetc.node_props(Dajax.process,{'body_model_id':{{bodymodel.examination}},'nodename':node.id});
+      // body...
+    }
+  });
+});
+</script>
 
 
 

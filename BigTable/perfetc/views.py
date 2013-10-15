@@ -12,11 +12,12 @@ from django.core.servers.basehttp import FileWrapper
 from datetime import date
 from exams.models import *
 from perfetc.models import *
+from perfetc.forms import *
 
 
 
 def circulation(request,patient_id,examination_id):
 	bodymodel=get_object_or_404(Body,examination=examination_id)
-	print examination_id,bodymodel.id
-
-	return render(request,'perfetc/graph.html',{'bodymodel':bodymodel})
+	compartmentForm=CompartmentForm
+	return render(request,'perfetc/graph.html',{'bodymodel':bodymodel,
+												'compartment_form':compartmentForm})
