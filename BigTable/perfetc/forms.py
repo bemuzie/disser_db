@@ -7,4 +7,4 @@ from django.forms.models import modelformset_factory
 class CompartmentForm(forms.ModelForm):
     class Meta:
         model = Compartment
-        
+        fields = ('name','pdf','mean','sigma','parametr3','injection')

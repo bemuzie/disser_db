@@ -6,6 +6,7 @@ from dajaxice.utils import deserialize_form
 from dajax.core import Dajax
 from perfetc.models import *
 from perfetc.forms import *
+from django.core.context_processors import csrf
 
 
 @dajaxice_register
@@ -25,7 +26,30 @@ def node_props(request,body_model_id,nodename):
 	dajax = Dajax()
 	body=Body.objects.get(examination=int(body_model_id))
 	compartment=body.compartment_set.get(name=nodename)
-	print compartment
+	print request
 	form = CompartmentForm(instance=compartment)
-	dajax.assign('#compartment', 'innerHTML',str(form))
+	
+	print form.as_p()
+
+	
+
+	dajax.assign('#compartment', 'innerHTML',form.as_p())
 	return dajax.json()
+
+@dajaxice_register
+def change_model(request,compartment_form,body_model_id):
+	dajax = Dajax()
+	body=Body.objects.get(examination=int(body_model_id))
+	form=CompartmentForm(deserialize_form(compartment_form))
+	compartment=body.compartment_set.get(name=form['name'].value())
+	print compartment
+	form.instance=compartment
+	
+	if form.is_valid():
+		print 'ok'
+		form.save()
+
+	else:
+		for er_field,er_text in form.errors.items():
+			dajax.script("""$('#id_%s').parent().parent().addClass('has-error');"""
+				%er_field)
