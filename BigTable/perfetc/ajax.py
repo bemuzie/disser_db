@@ -26,3 +26,6 @@ def node_props(request,body_model_id,nodename):
 	body=Body.objects.get(examination=int(body_model_id))
 	compartment=body.compartment_set.get(name=nodename)
 	print compartment
+	form = CompartmentForm(instance=compartment)
+	dajax.assign('#compartment', 'innerHTML',str(form))
+	return dajax.json()
