@@ -32,6 +32,9 @@ class Compartment(models.Model):
 	sigma = models.FloatField()
 	parametr3 = models.FloatField()
 	injection = models.BooleanField()
+
+
+
 	def __unicode__(self):
 		return self.name
 	def add_edge(self, compartment, weight = 1):
@@ -42,6 +45,7 @@ class Compartment(models.Model):
 			to_compartment = compartment, 
 			weight = weight)
 		return edge
+	
 
 
 

@@ -5,7 +5,11 @@
 	
 		<canvas id="graph" style="margin-right: auto; margin-left: auto;"></canvas>
 	</div>
-	<div class="col-xs-12 col-sm-6 col-lg-6" id="myfirstchart" style="height: 250px;"></div>
+	<div class="col-xs-12 col-sm-5 col-lg-5" id="myfirstchart" style="height: 250px;">
+   
+  </div>
+  <div class="col-xs-12 col-sm-1 col-lg-1" id="choices"> </div> 
+  
 </div>
 <div>
 <form class = "form-horizontal" action="" method="post" id='compartment'>
@@ -28,40 +32,71 @@
 <script type="text/javascript" src="/static/js/dracula/raphael-min.js"></script>
 <script type="text/javascript" src="/static/js/springy.js"></script>
 <script type="text/javascript" src="/static/js/springyui.js"></script>
+<script type="text/javascript" src="/static/js/jquery.flot.min.js"></script>
 <script src="http://cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
 
 
 <link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css">
 
 
+	
 <script>
-new Morris.Line({
-  // ID of the element in which to draw the chart.
-  element: 'myfirstchart',
-  // Chart data records -- each entry in this array corresponds to a point on
-  // the chart.
-  data: [
-    { year: '2006', value: 20 },
-    { year: '2009', value: 10 },
-    { year: '2010', value: 5 },
-    { year: '2011', value: 5 },
-    { year: '2012', value: 20 }
-  ],
-  // The name of the data record attribute that contains x-values.
-  xkey: 'year',
-  // A list of names of data record attributes that contain y-values.
-  ykeys: ['value'],
-  // Labels for the ykeys -- will be displayed when you hover over the
-  // chart.
-  labels: ['Value']
-});
-</script>	
-	
+var redraw_graph = function (data){
+  datasets = data
+  var i = 0;
+    $.each(datasets, function(key, val) {
+      val.color = i;
+      ++i;
+    });
+
+    // insert checkboxes 
+    var choiceContainer = $("#choices");
+    choiceContainer.html("")
+    $.each(datasets, function(key, val) {
+      console.log $('#')
+      choiceContainer.append("<br/><input type='checkbox' name='" + key +
+        "' checked='checked' id='id" + key + "'></input>" +
+        "<label for='id" + key + "'>"
+        + val.label + "</label>");
+    });
+
+    choiceContainer.find("input").click(plotAccordingToChoices);
+
+    function plotAccordingToChoices() {
+
+      var data = [];
+
+      choiceContainer.find("input:checked").each(function () {
+        var key = $(this).attr("name");
+        if (key && datasets[key]) {
+          data.push(datasets[key]);
+        }
+      });
+
+      if (data.length > 0) {
+        $.plot("#myfirstchart", data, {
+          yaxis: {
+            min: 0
+          },
+          xaxis: {
+            tickDecimals: 0
+          }
+        });
+      }
+    }
+
+    plotAccordingToChoices();
+   
+}
+</script>
+
 <script type="text/javascript">
-	
+
 	$(document).ready(function() {
 Dajaxice.perfetc.show_graph(Dajax.process,{'body_model_id':{{bodymodel.examination}} });    
 });
+
+
 </script>	
 <script>
 var graph = new Springy.Graph();
@@ -79,11 +114,13 @@ jQuery(function (){
 });
 </script>
 <script>
+
 $('#compartment').on('change',function(){
   console.log('1')
   Dajaxice.perfetc.change_model(Dajax.process,{'compartment_form':$('#compartment').serialize(true),
                                               'body_model_id':{{bodymodel.examination}}})
 });
+
 </script>
 
 
