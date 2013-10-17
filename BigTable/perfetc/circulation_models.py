@@ -54,6 +54,7 @@ class Compartment_fft(object):
         #scale - delay
         self.concentration=np.zeros(self.time.__len__())
         self.concentration[int(self.scale / self.time[1]) : int(self.loc / self.time[1]) ]=self.a
+        self.profile=np.zeros(self.time.__len__())
 
     def make_profile(self):
         # Make PDF of compartment transit times
