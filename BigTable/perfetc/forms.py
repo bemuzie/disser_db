@@ -13,5 +13,5 @@ class EdgeForm(forms.ModelForm):
     class Meta:
         model = Edge
         
-EdgeFormSet_output = modelformset_factory(Edge,extra=1,max_num=None,fields=('to_compartment', 'weight'))
-EdgeFormSet_input = modelformset_factory(Edge,extra=1,max_num=None,fields=('from_compartment', 'weight'))
+EdgeFormSet_output = modelformset_factory(Edge,extra=0,max_num=None,fields=('to_compartment', 'weight'))
+EdgeFormSet_input = modelformset_factory(Edge,extra=0,max_num=None,fields=('from_compartment', 'weight'))

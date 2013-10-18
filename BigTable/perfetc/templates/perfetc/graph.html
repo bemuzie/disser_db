@@ -26,12 +26,6 @@
 </form>
 </div>
 
-<div>
-<form class = "form-horizontal" action="" method="post" id='new_compartment'>
-{{compartment_form}}
-</form>
-</div>
-
 
 {% load dajaxice_templatetags %}{% dajaxice_js_import %}
 {%endblock page%}
@@ -149,9 +143,18 @@ $('#compartment').on('change',function(){
 $('#edge_formset_outputs').on('change',function(){
   console.log('1')
   Dajaxice.perfetc.change_edge(Dajax.process,{'edge_form':$('#edge_formset_outputs').serialize(true),
+                                              'formset_type':'output',
                                               'body_model_id':{{bodymodel.examination}}})
 });
 
+</script>
+<script type="text/javascript">
+  $('#edge_formset_inputs').on('change',function(){
+  console.log('1')
+  Dajaxice.perfetc.change_edge(Dajax.process,{'edge_form':$('#edge_formset_inputs').serialize(true),
+                                              'formset_type':'input',
+                                              'body_model_id':{{bodymodel.examination}}})
+});
 </script>
 
 {% endblock scripts %}

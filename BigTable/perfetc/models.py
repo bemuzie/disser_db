@@ -5,6 +5,7 @@ from exams import models as exams_model
 class Body(models.Model):
 	injection_duration = models.IntegerField()
 	examination=models.IntegerField(default=0)
+	experimental_time_axis = models.CharField(max_length=100)
 	def calculate_tac(self,time_duration,time_resolution):
 		tmp_model={}
 		for node in compartment_set.all():
@@ -18,7 +19,8 @@ class Body(models.Model):
 			[tmp_model[node.name].add_successor(tmp_model[n.name],n.weight) for n in node.successors]
 		tmp_model['Injection'].successors[0]()
 		return dict([(n.name,n.concentration) for n in tmp_model.values()])
-		
+	def get_timeaxis_as_list(self):
+		return map(int,self.timeaxis.split(','))
 			
 
 
@@ -32,7 +34,7 @@ class Compartment(models.Model):
 	sigma = models.FloatField()
 	parametr3 = models.FloatField()
 	injection = models.BooleanField()
-
+	experimental_concentration = models.CharField(max_length=100)
 
 
 	def __unicode__(self):
@@ -45,7 +47,8 @@ class Compartment(models.Model):
 			to_compartment = compartment, 
 			weight = weight)
 		return edge
-	
+	def get_experimental_conc_as_list(self):
+		return map(int,self.experimental_concentration.split(','))
 
 
 

@@ -39,9 +39,9 @@ def node_props(request,body_model_id,nodename):
 	
 	form = CompartmentForm(instance=compartment)
 	edge_formset_outputs = EdgeFormSet_output(queryset=Edge.objects.filter(from_compartment=compartment),
-        initial=[{'compartment_from':compartment}])
+        initial=[{'from_compartment':compartment}])
 	edge_formset_inputs = EdgeFormSet_input(queryset=Edge.objects.filter(to_compartment=compartment),
-        initial=[{'compartment_to':compartment}])
+        initial=[{'to_compartment':compartment}])
 
 	dajax.assign('#compartment', 'innerHTML',form.as_p())
 	dajax.assign('#edge_formset_outputs', 'innerHTML',edge_formset_outputs.as_p())
@@ -69,14 +69,27 @@ def change_model(request,compartment_form,body_model_id):
 	dajax.add_data(JSONdata,'draw_concentration_plot')
 	return dajax.json()
 @dajaxice_register
-def change_edge(request,edge_form,body_model_id):
+def change_edge(request,edge_form,formset_type,body_model_id):
 	dajax = Dajax()
 	body=Body.objects.get(examination=int(body_model_id))
-	form=EdgeFormSet_output(deserialize_form(edge_form))
+	if formset_type == 'input':
+		form=EdgeFormSet_input(deserialize_form(edge_form))
+	elif formset_type == 'output': 
+		form=EdgeFormSet_output(deserialize_form(edge_form))
 	if form.is_valid():
-		for i in range(int(form.data[u'form-TOTAL_FORMS'])):
-			edge_id=form.data['form-%s-id'%i]
-			print Edge.objects.get(pk=edge_id).to_compartment, Edge.objects.get(pk=edge_id).from_compartment
+		form.save()
+		JSONdata=make_circul_model(int(body_model_id),200,1,['concentration','transit_times'])
+	#print JSONdata
+		dajax.add_data(JSONdata,'draw_concentration_plot')
+		return dajax.json()
+	else:
+		
+		for err in form.errors:
+			for er_field,er_text in err.items():
+				dajax.script("""$('#id_%s').parent().parent().addClass('has-error');"""
+					%er_field)
+				print er_field,er_text
+				return dajax.json()
 
 @dajaxice_register
 def make_circul_model(body_model_id,time_duration,time_resolution,return_data='concentration'):
