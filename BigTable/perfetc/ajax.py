@@ -38,45 +38,46 @@ def node_props(request,body_model_id,nodename):
 	compartment=body.compartment_set.get(name=nodename)
 	
 	form = CompartmentForm(instance=compartment)
-		
+	edge_formset_outputs = EdgeFormSet_output(queryset=Edge.objects.filter(from_compartment=compartment),
+        initial=[{'compartment_from':compartment}])
+	edge_formset_inputs = EdgeFormSet_input(queryset=Edge.objects.filter(to_compartment=compartment),
+        initial=[{'compartment_to':compartment}])
 
 	dajax.assign('#compartment', 'innerHTML',form.as_p())
+	dajax.assign('#edge_formset_outputs', 'innerHTML',edge_formset_outputs.as_p())
+	dajax.assign('#edge_formset_inputs', 'innerHTML',edge_formset_inputs.as_p())
+
 	return dajax.json()
 
 @dajaxice_register
 def change_model(request,compartment_form,body_model_id):
 	dajax = Dajax()
+
 	body=Body.objects.get(examination=int(body_model_id))
 	form=CompartmentForm(deserialize_form(compartment_form))
 	compartment=body.compartment_set.get(name=form['name'].value())
 	form.instance=compartment
-	
 	if form.is_valid():
-		print 'ok'
-		form.save()
 		
-
+		form.save()
 	else:
 		for er_field,er_text in form.errors.items():
 			dajax.script("""$('#id_%s').parent().parent().addClass('has-error');"""
 				%er_field)
 	JSONdata=make_circul_model(int(body_model_id),200,1,['concentration','transit_times'])
-
 	#print JSONdata
 	dajax.add_data(JSONdata,'draw_concentration_plot')
-	
 	return dajax.json()
-
-def plot_concentration(request,body_model_id,time_duration,time_resolution):
+@dajaxice_register
+def change_edge(request,edge_form,body_model_id):
 	dajax = Dajax()
 	body=Body.objects.get(examination=int(body_model_id))
-	nodes = [i.name for i in body_model]
-	body_dict = {"nodes":[i.name for i in body_model],
-					"edges":[[i.from_compartment.name, i.to_compartment.name,{'label':i.weight}]
-					 for i in Edge.objects.all()]}
+	form=EdgeFormSet_output(deserialize_form(edge_form))
+	if form.is_valid():
+		for i in range(int(form.data[u'form-TOTAL_FORMS'])):
+			edge_id=form.data['form-%s-id'%i]
+			print Edge.objects.get(pk=edge_id).to_compartment, Edge.objects.get(pk=edge_id).from_compartment
 
-
-	return dajax.json()
 @dajaxice_register
 def make_circul_model(body_model_id,time_duration,time_resolution,return_data='concentration'):
 	dajax = Dajax()
