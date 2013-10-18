@@ -3,7 +3,7 @@ from scipy import signal
 import numpy as np
 import matplotlib.pyplot as plt
 import sys
-
+sys.setrecursionlimit(50000)
 class Compartment_fft(object):
     def __init__(self,name):
         self.name = name
@@ -11,7 +11,7 @@ class Compartment_fft(object):
         self.predecessors = {}
         self.pdf = stats.gamma.pdf
         self.treshold = 0.0000001
-        print name , 'initited'
+        
 
         self.i=0
     def __call__(self):
@@ -20,7 +20,7 @@ class Compartment_fft(object):
         newconc = signal.fftconvolve(self.profile, inputs)[:self.time.__len__()]
         diff = self.concentration - newconc
         self.concentration = newconc
-        print self.name , self.profile
+        
         if np.sum(diff*diff)>self.treshold:
             for s in self.successors:
                 s()

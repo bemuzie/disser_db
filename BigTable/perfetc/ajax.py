@@ -60,9 +60,11 @@ def change_model(request,compartment_form,body_model_id):
 		for er_field,er_text in form.errors.items():
 			dajax.script("""$('#id_%s').parent().parent().addClass('has-error');"""
 				%er_field)
-	JSONdata=make_circul_model(int(body_model_id),100,1)
+	JSONdata=make_circul_model(int(body_model_id),200,1,['concentration','transit_times'])
+
 	#print JSONdata
-	dajax.add_data(JSONdata,'redraw_graph')
+	dajax.add_data(JSONdata,'draw_concentration_plot')
+	
 	return dajax.json()
 
 def plot_concentration(request,body_model_id,time_duration,time_resolution):
@@ -76,7 +78,7 @@ def plot_concentration(request,body_model_id,time_duration,time_resolution):
 
 	return dajax.json()
 @dajaxice_register
-def make_circul_model(body_model_id,time_duration,time_resolution):
+def make_circul_model(body_model_id,time_duration,time_resolution,return_data='concentration'):
 	dajax = Dajax()
 	body=Body.objects.get(examination=int(body_model_id))
 	body_model=body.compartment_set.all()
@@ -96,8 +98,12 @@ def make_circul_model(body_model_id,time_duration,time_resolution):
 									for edge in Edge.objects.filter(from_compartment=node)]
 	
 	circul_model[ body.compartment_set.get(injection=True).successors.all()[0].name]()
-	JSONdata=[{'label':n,'data':map(list,zip(c.time.tolist(),c.concentration.tolist()))} for n,c in circul_model.items()]
+	JSONdata=[]
+	if 'concentration' in return_data:
+		JSONdata.append([{'label':n,'data':map(list,zip(c.time.tolist(),c.concentration.tolist()))} for n,c in circul_model.items()])
 	#JSONdata = [[[1,2],[4,3],[5,3]]]
-	print circul_model[ body.compartment_set.get(injection=True).successors.all()[0].name]
+	if 'transit_times' in return_data:
+		JSONdata.append([{'label':n,'data':map(list,zip(c.time.tolist(),c.profile.tolist()))} for n,c in circul_model.items()])
+	
 	
 	return JSONdata
