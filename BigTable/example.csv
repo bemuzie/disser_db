@@ -1,0 +1,5 @@
+
+ROI_name;size_max;max_distance;volume;bf_mean;bf_sd;bf_median;bf_quantile_low;bf_quantile_up;bv_mean;bv_sd;bv_median;bv_quantile_low;bv_quantile_up;mtt_mean;mtt_sd;mtt_median;mtt_quantile_low;mtt_quantile_up;ttp
+tumor;32;14;23;123;2;3;4;3;14;23;123;2;14;23;123;2;14;23;3
+pancreas;44;22;11;23;121;432;32;2;22;11;23;121;22;11;23;121;22;11;2
+liver;31;12;1;32;32;123;12;22;12;1;32;32;12;1;32;32;12;1;1

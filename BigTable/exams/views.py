@@ -107,7 +107,6 @@ def modify_examination(request, patient_id, examination_id):
         initial=[{'examination':examination}])
 
 
-
     if examination_id:
         examination_form = ExaminationForm(request.POST or None, 
                                         instance = patient.examination_set.get(pk=examination_id))
@@ -129,17 +128,13 @@ def modify_phase(request, patient_id, examination_id):
     phase_form = PhaseForm(request.POST or None)
     if request.POST.get("new_phase"):
         phase_formset = PhaseFormSet(request.POST)
-        print 'before'
         if phase_formset.is_valid():
-            print 'after'
             phase_formset.save(commit=False)
             for f in phase_formset:
                 f.examination=examination
                 try:
                     pi=examination.phase_set.get(pk=f.instance.id)
                     pi=f.instance
-
-
                 except:
                     examination.phase_set.add(f.instance)
             

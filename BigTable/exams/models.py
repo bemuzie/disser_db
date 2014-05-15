@@ -111,32 +111,34 @@ class Examination(models.Model):
 
 	#Act
 	##		Tumor
-	tumor_size_x = models.IntegerField(default =0)
-	tumor_size_y = models.IntegerField(default =0)
-	tumor_size_z = models.IntegerField(default =0)
-	tumor_volume = models.IntegerField(default =0)
+
+	
+
 	##		Pancreas
 	virsung_size = models.IntegerField(default =0)
 	distal_atrophy = models.BooleanField()
 	lypomatosis = models.BooleanField()
+	
 
 	##		Liver
 	choledoch_diametr = models.IntegerField(default =0)
 	bile_ducts_extension = models.BooleanField()
 	metastasis = models.IntegerField(default=0,choices=CHOICES['metastasis'])
+
 	##		Other
 	lymphadenopathy = models.BooleanField()
 	ascit = models.BooleanField()
 	arterial_invasion = models.IntegerField(default=0,choices=CHOICES['arterial_invasion']) # 0 - exact no, 1 - <50%, 2 - 50-75%, 3 >75%, 4 - exact yes
 	portal_invasion = models.IntegerField(default=0,choices=CHOICES['portal_invasion']) # 0 - exact no, 1 - probable, 2 - exact yes
 
+	##PCT
+
 
 	#links
 	patient=models.ForeignKey(Patient,default =0)
 	
 
-### Examinations
-
+### Показатели
 
 class Phase(models.Model):
 
@@ -152,9 +154,33 @@ class Density(models.Model):
 	roi = models.CharField(max_length=10)
 	phase = models.ForeignKey(Phase,default=0)
 
+class Perfusion(models.Model):
+	roi = models.CharField(max_length=10)
+	roi_size_max = models.IntegerField(default =0)
+	roi_max_distance = models.IntegerField(default =0)
+	roi_volume = models.IntegerField(default =0)
 
+	bf_mean = models.IntegerField(default =0)
+	bf_sd = models.IntegerField(default =0)
+	bf_median = models.IntegerField(default =0)
+	bf_quantile_low = models.IntegerField(default =0)
+	bf_quantile_up = models.IntegerField(default =0)
 
+	bv_mean = models.IntegerField(default =0)
+	bv_sd = models.IntegerField(default =0)
+	bv_median = models.IntegerField(default =0)
+	bv_quantile_low = models.IntegerField(default =0)
+	bv_quantile_up = models.IntegerField(default =0)
 
+	mtt_mean = models.IntegerField(default =0)
+	mtt_sd = models.IntegerField(default =0)
+	mtt_median = models.IntegerField(default =0)
+	mtt_quantile_low = models.IntegerField(default =0)
+	mtt_quantile_up = models.IntegerField(default =0)
+
+	#ttp - time to peak
+	ttp = models.IntegerField(default =0)
+	
 
 
 
