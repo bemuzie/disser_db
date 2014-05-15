@@ -97,15 +97,81 @@ def new_examination(request, patient_id, examination_id=None):
         return HttpResponseRedirect(reverse('exams.views.detail', args=(patient.id,)))
     return render(request, 'reports/add_examination.html', {'patient':patient,
                                                             'examination_form':examination_form})
-
 def modify_examination(request, patient_id, examination_id):
+    #Изменение исследования, добавление временных задержек, описание результатов исследования
+    examination = get_object_or_404(Examination, pk=examination_id)
+    patient = get_object_or_404(Patient, pk=examination.patient.id)
+    examination_form = ExaminationForm(request.POST or None, 
+                                        instance = examination)
+    phase_formset = PhaseFormSet(queryset=Phase.objects.filter(examination=examination),
+        initial=[{'examination':examination}])
+
+
+
+    if examination_id:
+        examination_form = ExaminationForm(request.POST or None, 
+                                        instance = patient.examination_set.get(pk=examination_id))
+    else:
+        examination_form = ExaminationForm(request.POST or None)
+        
+    if examination_form.is_valid():
+        examination_form.save(commit=False)
+        examination_form.patient=patient
+        patient.examination_set.add(examination_form.instance)
+        return HttpResponseRedirect(reverse('exams.views.detail', args=(patient.id,)))
+    return render(request, 'reports/modify_examination.html', {'patient':patient,
+                                                            'examination':examination,
+                                                            'examination_form':examination_form,
+                                                            'phase_formset':phase_formset})
+
+def modify_phase(request, patient_id, examination_id):
+    examination = get_object_or_404(Examination, pk=examination_id)
+    phase_form = PhaseForm(request.POST or None)
+    if request.POST.get("new_phase"):
+        phase_formset = PhaseFormSet(request.POST)
+        print 'before'
+        if phase_formset.is_valid():
+            print 'after'
+            phase_formset.save(commit=False)
+            for f in phase_formset:
+                f.examination=examination
+                try:
+                    pi=examination.phase_set.get(pk=f.instance.id)
+                    pi=f.instance
+
+
+                except:
+                    examination.phase_set.add(f.instance)
+            
+            phase_formset = PhaseFormSet(queryset=Phase.objects.filter(examination=examination),
+                initial=[{'examination':examination}])
+            return HttpResponseRedirect(reverse('exams.views.modify_examination', args=(patient_id,examination.id)))
+    
+
+    if request.POST.get("change_phase"):
+        phase = examination.phase_set.get(pk=request.POST.get("change_phase"))
+        print 1
+        phase.done = not phase.done
+        phase.save()
+        
+        return HttpResponse(status=204)
+    if request.POST.get("delete_phase"):
+        
+        examination.phase_set.get(pk=request.POST.get("delete_phase")).delete()
+        return HttpResponseRedirect(reverse('exams.views.modify_examination', args=(patient_id, examination.id)))
+    return modify_examination(request, patient_id, examination_id)
+
+    
+
+def actions_examination(request, patient_id, examination_id):
+    #Контролирует действие кнопочек в списке исследований на странице пациента
     
     if request.POST.get('delete'):
         patient = get_object_or_404(Patient, pk=patient_id)
         patient.examination_set.get(pk=examination_id).delete()
         return HttpResponseRedirect(reverse('exams.views.detail', args=(patient.id,)))
     elif request.POST.get('modify'):
-        return HttpResponseRedirect(reverse('exams.views.new_examination', args=(patient_id,examination_id)))
+        return HttpResponseRedirect(reverse('exams.views.modify_examination', args=(patient_id,examination_id)))
     elif request.POST.get('download'):
         patient = get_object_or_404(Patient, pk=patient_id)
         examination = patient.examination_set.get(pk=examination_id)

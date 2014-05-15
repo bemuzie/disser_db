@@ -51,8 +51,15 @@ class ExaminationForm(forms.ModelForm):
     class Meta:
         model = Examination
         exclude = 'patient'
+
 class ReminderForm(forms.ModelForm):
     class Meta:
         model = Reminder
         
 ReminderFormSet = modelformset_factory(Reminder,extra=1,max_num=None,fields=('note', 'remind_date'))
+
+class PhaseForm(forms.ModelForm):
+    class Meta:
+        model = Phase
+
+PhaseFormSet = modelformset_factory(Phase,extra=1,max_num=None,fields=('time', 'zone'))

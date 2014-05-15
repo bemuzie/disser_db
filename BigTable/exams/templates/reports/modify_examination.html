@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+{% block title %} Исследование {% endblock %}
+
+{% block page %}
+<div>
+	<h1>{{ patient.fio }}</h1>
+        
+	<form method="post" action="">
+		{% csrf_token %}
+		
+			{{ examination_form | bootstrap}} 
+		
+
+		<input type="submit" value="Отправить">
+		</form>
+
+	<div class='container'> <!-- Фазы -->
+
+	<form class = "form-horizontal" action="/reports/{{patient.id}}/{{examination.id}}/modify_phase" method="post" name='patient'>
+	<form class = "form-horizontal" action="/reports/{{patient.id}}/{{examination.id}}/" method="post" name='patient'>
+	{%csrf_token%}
+		{{phase_formset.management_form}}
+		{%for phase_form in phase_formset|slice:":-1"%}
+			<div class="form-group">
+				{{phase_form}}
+				<button class="btn " type="submit" value="{{phase_form.instance.id}}" id= 'change_phase' name = "change_phase">{{phase_form.instance.get_done_display}}</button>
+				<button class="btn btn-danger" type="submit" value="{{phase_form.instance.id}}" id= 'change_phase' name = "delete_phase">Удалить</button>
+			</div>
+		{%endfor%}
+		<div class="form-group">
+		{{phase_formset|last}}
+		<input class="btn btn-success " type="submit" value="Новое" name = "new_phase">
+		</div>
+
+		
+	</form> 
+
+</div>
+</div>	
+
+{% endblock page %}

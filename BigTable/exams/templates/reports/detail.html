@@ -90,7 +90,7 @@
 			
 			<p>{{ex.date}}</p>
 			<p>{{ex.conclusion}} </p>
-			<p><form class="form-actions" method="post" action="./{{ex.id}}/modify_examination">
+			<p><form class="form-actions" method="post" action="./{{ex.id}}/actions_examination">
 				{% csrf_token %}
 				<input class="btn btn-warning" type="Submit" value = "Изменить" name='modify'>			
 				<input class="btn btn-danger" type="Submit" value = "Удалить" name='delete'>

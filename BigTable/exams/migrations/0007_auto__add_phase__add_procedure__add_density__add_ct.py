@@ -1,0 +1,218 @@
+# -*- coding: utf-8 -*-
+import datetime
+from south.db import db
+from south.v2 import SchemaMigration
+from django.db import models
+
+
+class Migration(SchemaMigration):
+
+    def forwards(self, orm):
+        # Adding model 'Phase'
+        db.create_table(u'exams_phase', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('time', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('field', self.gf('django.db.models.fields.CharField')(max_length=10)),
+            ('CT', self.gf('django.db.models.fields.related.ForeignKey')(default=0, to=orm['exams.CT'])),
+        ))
+        db.send_create_signal(u'exams', ['Phase'])
+
+        # Adding model 'Procedure'
+        db.create_table(u'exams_procedure', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('procedure', self.gf('django.db.models.fields.CharField')(max_length=40)),
+            ('date', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
+            ('text', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('patient', self.gf('django.db.models.fields.related.ForeignKey')(default=0, to=orm['exams.Patient'])),
+        ))
+        db.send_create_signal(u'exams', ['Procedure'])
+
+        # Adding model 'Density'
+        db.create_table(u'exams_density', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('density', self.gf('django.db.models.fields.IntegerField')()),
+            ('roi', self.gf('django.db.models.fields.CharField')(max_length=10)),
+            ('phase', self.gf('django.db.models.fields.related.ForeignKey')(default=0, to=orm['exams.Phase'])),
+        ))
+        db.send_create_signal(u'exams', ['Density'])
+
+        # Adding model 'CT'
+        db.create_table(u'exams_ct', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('ce_agent', self.gf('django.db.models.fields.CharField')(max_length=10)),
+            ('ce_conc', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('ce_volume', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('ce_speed_suggested', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('ce_speed_real', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('ce_water_volume', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('ce_water_speed', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('date', self.gf('django.db.models.fields.DateField')(null=True, blank=True)),
+            ('artefacts', self.gf('django.db.models.fields.CharField')(max_length=1000, null=True)),
+            ('tumor_size_x', self.gf('django.db.models.fields.IntegerField')()),
+            ('tumor_size_y', self.gf('django.db.models.fields.IntegerField')()),
+            ('tumor_size_z', self.gf('django.db.models.fields.IntegerField')()),
+            ('tumor_volume', self.gf('django.db.models.fields.IntegerField')()),
+            ('virsung_size', self.gf('django.db.models.fields.IntegerField')()),
+            ('distal_atrophy', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('lypomatosis', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('choledoch_diametr', self.gf('django.db.models.fields.IntegerField')()),
+            ('bile_ducts_extension', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('metastasis', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('lymphadenopathy', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('ascit', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('arterial_invasion', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('portal_invasion', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('patient', self.gf('django.db.models.fields.related.ForeignKey')(default=0, to=orm['exams.Patient'])),
+        ))
+        db.send_create_signal(u'exams', ['CT'])
+
+
+    def backwards(self, orm):
+        # Deleting model 'Phase'
+        db.delete_table(u'exams_phase')
+
+        # Deleting model 'Procedure'
+        db.delete_table(u'exams_procedure')
+
+        # Deleting model 'Density'
+        db.delete_table(u'exams_density')
+
+        # Deleting model 'CT'
+        db.delete_table(u'exams_ct')
+
+
+    models = {
+        u'contenttypes.contenttype': {
+            'Meta': {'ordering': "('name',)", 'unique_together': "(('app_label', 'model'),)", 'object_name': 'ContentType', 'db_table': "'django_content_type'"},
+            'app_label': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
+        },
+        u'exams.clinicaldata': {
+            'Meta': {'object_name': 'ClinicalData'},
+            'date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'patient': ('django.db.models.fields.related.ForeignKey', [], {'default': '0', 'to': u"orm['exams.Patient']"}),
+            'text': ('django.db.models.fields.CharField', [], {'max_length': '500'}),
+            'value': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'})
+        },
+        u'exams.ct': {
+            'Meta': {'object_name': 'CT'},
+            'artefacts': ('django.db.models.fields.CharField', [], {'max_length': '1000', 'null': 'True'}),
+            'arterial_invasion': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'ascit': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'bile_ducts_extension': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'ce_agent': ('django.db.models.fields.CharField', [], {'max_length': '10'}),
+            'ce_conc': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'ce_speed_real': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'ce_speed_suggested': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'ce_volume': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'ce_water_speed': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'ce_water_volume': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'choledoch_diametr': ('django.db.models.fields.IntegerField', [], {}),
+            'date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
+            'distal_atrophy': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'lymphadenopathy': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'lypomatosis': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'metastasis': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'patient': ('django.db.models.fields.related.ForeignKey', [], {'default': '0', 'to': u"orm['exams.Patient']"}),
+            'portal_invasion': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'tumor_size_x': ('django.db.models.fields.IntegerField', [], {}),
+            'tumor_size_y': ('django.db.models.fields.IntegerField', [], {}),
+            'tumor_size_z': ('django.db.models.fields.IntegerField', [], {}),
+            'tumor_volume': ('django.db.models.fields.IntegerField', [], {}),
+            'virsung_size': ('django.db.models.fields.IntegerField', [], {})
+        },
+        u'exams.density': {
+            'Meta': {'object_name': 'Density'},
+            'density': ('django.db.models.fields.IntegerField', [], {}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'phase': ('django.db.models.fields.related.ForeignKey', [], {'default': '0', 'to': u"orm['exams.Phase']"}),
+            'roi': ('django.db.models.fields.CharField', [], {'max_length': '10'})
+        },
+        u'exams.docs': {
+            'Meta': {'object_name': 'Docs'},
+            'date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'img': ('django.db.models.fields.files.FileField', [], {'max_length': '100'}),
+            'patient': ('django.db.models.fields.related.ForeignKey', [], {'default': '0', 'to': u"orm['exams.Patient']"})
+        },
+        u'exams.examination': {
+            'Meta': {'object_name': 'Examination'},
+            'act': ('django.db.models.fields.CharField', [], {'max_length': '4000', 'null': 'True'}),
+            'ce_agent': ('django.db.models.fields.CharField', [], {'max_length': '10'}),
+            'ce_conc': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'ce_speed_real': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'ce_speed_suggested': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'ce_volume': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'ce_water_speed': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'ce_water_volume': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'conclusion': ('django.db.models.fields.CharField', [], {'max_length': '1000', 'null': 'True'}),
+            'date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'modality': ('django.db.models.fields.CharField', [], {'max_length': '1'}),
+            'patient': ('django.db.models.fields.related.ForeignKey', [], {'default': '0', 'to': u"orm['exams.Patient']"})
+        },
+        u'exams.patient': {
+            'Meta': {'object_name': 'Patient'},
+            'birth_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
+            'clinical_data': ('django.db.models.fields.CharField', [], {'max_length': '500'}),
+            'fio': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'weight': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'})
+        },
+        u'exams.perfusionct': {
+            'Meta': {'object_name': 'PerfusionCT'},
+            'af': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'bv': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'data': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'mtt': ('django.db.models.fields.IntegerField', [], {'default': '0'})
+        },
+        u'exams.phase': {
+            'CT': ('django.db.models.fields.related.ForeignKey', [], {'default': '0', 'to': u"orm['exams.CT']"}),
+            'Meta': {'object_name': 'Phase'},
+            'field': ('django.db.models.fields.CharField', [], {'max_length': '10'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'time': ('django.db.models.fields.IntegerField', [], {'default': '0'})
+        },
+        u'exams.procedure': {
+            'Meta': {'object_name': 'Procedure'},
+            'date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'patient': ('django.db.models.fields.related.ForeignKey', [], {'default': '0', 'to': u"orm['exams.Patient']"}),
+            'procedure': ('django.db.models.fields.CharField', [], {'max_length': '40'}),
+            'text': ('django.db.models.fields.CharField', [], {'max_length': '100'})
+        },
+        u'exams.reminder': {
+            'Meta': {'object_name': 'Reminder'},
+            'done': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'note': ('django.db.models.fields.CharField', [], {'max_length': '140'}),
+            'patient': ('django.db.models.fields.related.ForeignKey', [], {'default': '0', 'to': u"orm['exams.Patient']"}),
+            'remind_date': ('django.db.models.fields.DateField', [], {'null': 'True', 'blank': 'True'})
+        },
+        u'exams.tagdictionary': {
+            'Meta': {'object_name': 'TagDictionary'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'tag': ('django.db.models.fields.related.ForeignKey', [], {'default': '0', 'to': u"orm['taggit.Tag']"}),
+            'word': ('django.db.models.fields.CharField', [], {'max_length': '250'})
+        },
+        u'taggit.tag': {
+            'Meta': {'object_name': 'Tag'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '100'}),
+            'slug': ('django.db.models.fields.SlugField', [], {'unique': 'True', 'max_length': '100'})
+        },
+        u'taggit.taggeditem': {
+            'Meta': {'object_name': 'TaggedItem'},
+            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "u'taggit_taggeditem_tagged_items'", 'to': u"orm['contenttypes.ContentType']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'object_id': ('django.db.models.fields.IntegerField', [], {'db_index': 'True'}),
+            'tag': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "u'taggit_taggeditem_items'", 'to': u"orm['taggit.Tag']"})
+        }
+    }
+
+    complete_apps = ['exams']
