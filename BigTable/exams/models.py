@@ -180,6 +180,7 @@ class Perfusion(models.Model):
 
 	#ttp - time to peak
 	ttp = models.IntegerField(default =0)
+	examination = models.ForeignKey(Examination,default=0)
 	
 
 
