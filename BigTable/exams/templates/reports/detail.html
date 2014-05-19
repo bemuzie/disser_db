@@ -47,15 +47,61 @@
 	
 </div>
 
+<!-- Отображение всей информации о пациенте и проведённых исследованиях -->
+<div class='container'>
+
+{{examination.phase_set}}
+
+</div>
+
 
 <div class='container'>
 <div class='container'> <!-- Клинические данные -->
+
+	{% for procedure in patient.procedure_set.all %}
+		<p> 
+		{{procedure.procedure}} - {{procedure.date}}
+			<form class = "form-horizontal" action="/reports/{{patient.id}}/modify_procedure" method="post" name='patient'>
+			{%csrf_token%}
+			<button class="btn btn-danger" type="submit" value="{{procedure.id}}" id= 'change_proceure' name = "delete_procedure">Удалить</button>
+			</form> 
+		</p>
+	{%endfor%}
+
+	<form class = "form-horizontal" action="/reports/{{patient.id}}/modify_procedure" method="post" name='patient'>
+	{%csrf_token%}
+		{{procedure_form}}
+		<input class="btn btn-success " type="submit" value="Новое" name = "new_procedure">
+		</div>
+	</form> 
+
+		{% for analysis in patient.analysis_set.all %}
+		<p> 
+		{{analysis.name}} - {{analysis.date}}
+			<form class = "form-horizontal" action="/reports/{{patient.id}}/modify_analysis" method="post" name='patient'>
+			{%csrf_token%}
+			<button class="btn btn-danger" type="submit" value="{{analysis.id}}" id= 'change_analysis' name = "delete_analysis">Удалить</button>
+			</form> 
+		</p>
+	{%endfor%}
+
+	<form class = "form-horizontal" action="/reports/{{patient.id}}/modify_analysis" method="post" name='patient'>
+	{%csrf_token%}
+		{{analysis_form}}
+		<input class="btn btn-success " type="submit" value="Новое" name = "new_analysis">
+		</div>
+	</form> 
+
+	{% for analis in patient.analysis_set.all %}
+	<p> {{analis.name}} - {{analis.value}}</p>
+	{%endfor%}
+<!--
 	<form action="" method="post" name='patient' id="patient">
 	{%csrf_token%}
 	{{patient_form | bootstrap}}
 	</form> 
-	</div>
-
+-->
+</div>
 <div class='container'>
 
 
@@ -84,6 +130,19 @@
 			
 			<p>{{ex.date}}</p>
 			<p>{{ex.conclusion}} </p>
+			
+			{% for ph in  ex.phase_set.all%} <!-- Вывод данных о фазах сканирования-->
+			<p>{{ph.time}} {{ph.zone}}</p>
+			{%endfor%}
+			{%for r in ph.density_set.all%}
+			{{r.roi}} {{r.density}}
+			{%endfor%}
+			
+			
+			{% for perf in  ex.perfusion_set.all%} <!-- Вывод данных о перфузионных показателях-->
+			<p>{{perf.roi}} {{perf.bf_mean}}</p>
+			{%endfor%}
+
 			<p><form class="form-actions" method="post" action="./{{ex.id}}/actions_examination">
 				{% csrf_token %}
 				<input class="btn btn-warning" type="Submit" value = "Изменить" name='modify'>			

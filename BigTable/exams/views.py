@@ -42,6 +42,8 @@ def patient_list(request):
 def detail(request, patient_id):
     patient = get_object_or_404(Patient, pk=patient_id)
     patient_form = PatientForm_lite(instance=patient)
+    procedure_form = ProcedureForm()
+    analysis_form = AnalysisForm()
     examinations = patient.examination_set.all()
     docs_form = DocsForm()
     reminder_formset = ReminderFormSet(queryset=Reminder.objects.filter(patient=patient),
@@ -70,8 +72,9 @@ def detail(request, patient_id):
                                                 'examinations' : examinations, 
                                                 'docs_form':docs_form,
                                                 "patient_form":patient_form,
-                                                'reminder_formset':reminder_formset
-
+                                                'reminder_formset':reminder_formset,
+                                                'procedure_form':procedure_form,
+                                                'analysis_form':analysis_form
                                                 })
 
 def add_patient(request):
@@ -299,7 +302,63 @@ def modify_reminder(request, patient_id):
         patient.reminder_set.get(pk=request.POST.get("delete_reminder")).delete()
         return HttpResponseRedirect(reverse('exams.views.detail', args=(patient.id,)))
     return detail(request, patient_id)
+
+def modify_procedure(request, patient_id):
+    
+    patient = get_object_or_404(Patient, pk=patient_id)
+    procedure_form = ProcedureForm(request.POST or None)
+    if request.POST.get("new_procedure"):
+        print 1
+        if procedure_form.is_valid():
+            print 'valid'
+            procedure_form.patient = patient
+            procedure_form.save()
+            patient.procedure_set.add(procedure_form.instance)
+            return HttpResponseRedirect(reverse('exams.views.detail', args=(patient.id,)))
+    
+    """
+    if request.POST.get("change_procedure"):
+        procedure = patient.procedure_set.get(pk=request.POST.get("change_procedure"))
+        print 1
+        procedure.done = not procedure.done
+        procedure.save()
         
+        return HttpResponse(status=204)
+    """
+    if request.POST.get("delete_procedure"):
+        print 11111
+        patient.procedure_set.get(pk=request.POST.get("delete_procedure")).delete()
+        return HttpResponseRedirect(reverse('exams.views.detail', args=(patient.id,)))
+    return detail(request, patient_id)
+        
+def modify_analysis(request, patient_id):
+    
+    patient = get_object_or_404(Patient, pk=patient_id)
+    analysis_form = AnalysisForm(request.POST or None)
+    if request.POST.get("new_analysis"):
+        print 1
+        if analysis_form.is_valid():
+            print 'valid'
+            analysis_form.patient = patient
+            analysis_form.save()
+            patient.analysis_set.add(analysis_form.instance)
+            return HttpResponseRedirect(reverse('exams.views.detail', args=(patient.id,)))
+    
+    """
+    if request.POST.get("change_analysis"):
+        analysis = patient.analysis_set.get(pk=request.POST.get("change_analysis"))
+        print 1
+        analysis.done = not analysis.done
+        analysis.save()
+        
+        return HttpResponse(status=204)
+    """
+    if request.POST.get("delete_analysis"):
+        print 11111
+        patient.analysis_set.get(pk=request.POST.get("delete_analysis")).delete()
+        return HttpResponseRedirect(reverse('exams.views.detail', args=(patient.id,)))
+    return detail(request, patient_id)
+
 
 def delete_patient (request, patient_id):
     if request.POST:

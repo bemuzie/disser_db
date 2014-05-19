@@ -58,16 +58,24 @@ class Tumor():
         self.conturs[self.distances == 12]=1
         
         self.conturs[self.conturs==0]=np.nan
+        self.distances_perf=np.round( self.distances*np.random.uniform(0.3,4,self.distances.shape) )
+     
     def make_perfusion(self):
-        dist=np.copy(self.distances)
+        dist=np.copy(self.distances_perf)
+        
         A=1
         K=0
-        Q=7
-        B=0.1
-        M=.5
-        v=.1
+        Q=10
+        B=0.13
+        M=.2
+        v=.15
         self.perf_map=A+(K-A)/((1+Q*np.exp(-B*(dist-M)))**(1/v))
-        self.perf_map*=np.random.normal(1,0.2,dist.shape)
+        coef=80*np.random.uniform(0.5,1.5)
+        self.perf_map*=coef
+        self.perf_map[dist!=0]+=np.random.normal(0,coef*.4,len(self.perf_map[dist!=0]))
+        self.perf_map[self.perf_map<0]=0
+
+
         #self.perf_map=1/(1+np.exp(-dist+np.random.normal(0,20,dist.shape)))
         
         #self.perf_map/=np.average(self.perf_map)
@@ -90,9 +98,12 @@ cm = plt.get_cmap('bwr')
 #cm.set_bad(color = 'k', alpha = 1)
 summary=[np.array([]) for i in range(50)]
 for i in range(20):
-    a=Tumor(151,np.random.randint(5,80),40)
+    a=Tumor(251,np.random.randint(10,45),30)
     a.make_distanses()
     a.make_perfusion()
+    f= file('../diss/data/tumors/tumor%s.npz'%i,'w+b')
+    np.savez(f,perf=a.perf_map,dist=a.distances)
+    f.close()
     for j in range(50):
         ap=a.perf_map[a.distances==j]
         

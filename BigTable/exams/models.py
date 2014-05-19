@@ -43,17 +43,21 @@ class Patient(models.Model):
 class Procedure(models.Model):
 	"""Information about treatment and other procedures"""
 	procedure = models.CharField(max_length = 40)
-	date = models.DateField(blank=True,null=True)
-	text = models.CharField(max_length = 100)
+	date = models.DateField(blank=True)
+	text = models.CharField(max_length = 100, blank=True)
 	patient = models.ForeignKey(Patient,default=0)
 
-
+class  Analysis(models.Model):
+	name = models.CharField(max_length = 40)
+	value = models.FloatField()
+	date = models.DateField(blank=True,null=True, )
+	patient = models.ForeignKey(Patient,default=0)
 
 class ClinicalData(models.Model):
-	patient = models.ForeignKey(Patient,default=0)
 	date = models.DateField(blank=True,null=True)
 	text = models.CharField(max_length = 500)
 	value = models.IntegerField(blank=True, null=True)
+	patient = models.ForeignKey(Patient,default=0)
 
 
 class Docs(models.Model):
@@ -141,10 +145,11 @@ class Examination(models.Model):
 ### Показатели
 
 class Phase(models.Model):
-
 	time = models.IntegerField(default =0)
-	zone = models.CharField(max_length=10)
+	zone = models.CharField(max_length=40)
 	examination = models.ForeignKey(Examination,default =0)
+	class Meta:
+		ordering = ['time']
 
 class Density(models.Model):
 	"""
@@ -153,6 +158,7 @@ class Density(models.Model):
 	density = models.IntegerField()
 	roi = models.CharField(max_length=10)
 	phase = models.ForeignKey(Phase,default=0)
+
 
 class Perfusion(models.Model):
 	roi = models.CharField(max_length=10)

@@ -52,6 +52,16 @@ class ExaminationForm(forms.ModelForm):
         model = Examination
         exclude = 'patient'
 
+class ProcedureForm(forms.ModelForm):
+    class Meta:
+        model = Procedure
+        exclude = 'patient'
+
+class AnalysisForm(forms.ModelForm):
+    class Meta:
+        model = Analysis
+        exclude = 'patient'
+
 class ReminderForm(forms.ModelForm):
     class Meta:
         model = Reminder
