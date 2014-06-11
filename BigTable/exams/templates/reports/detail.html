@@ -77,7 +77,7 @@
 
 		{% for analysis in patient.analysis_set.all %}
 		<p> 
-		{{analysis.name}} - {{analysis.date}}
+		{{analysis.name}} - {{analysis.value}} - {{analysis.date}}
 			<form class = "form-horizontal" action="/reports/{{patient.id}}/modify_analysis" method="post" name='patient'>
 			{%csrf_token%}
 			<button class="btn btn-danger" type="submit" value="{{analysis.id}}" id= 'change_analysis' name = "delete_analysis">Удалить</button>
@@ -92,9 +92,6 @@
 		</div>
 	</form> 
 
-	{% for analis in patient.analysis_set.all %}
-	<p> {{analis.name}} - {{analis.value}}</p>
-	{%endfor%}
 <!--
 	<form action="" method="post" name='patient' id="patient">
 	{%csrf_token%}

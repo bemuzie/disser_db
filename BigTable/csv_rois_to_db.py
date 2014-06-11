@@ -32,9 +32,9 @@ sys.stdout = codecs.getwriter('utf8')(sys.stdout)
 sys.stderr = codecs.getwriter('utf8')(sys.stderr)
 """
 
-ROOT = '/home/denest/EXAMPLE_PATIENT/Volumes/DCM/20120216_301'
+ROOT = '/home/denest/PERF_volumes/DASHKOV A.P. 05.09.1939/DCM/20140521_565'
 FILE = 'time_info.txt'
-EXAM_NUMBER = 66
+EXAM_NUMBER = 69
 
 f=open(os.path.join(ROOT,FILE))
 f_list = f.readlines()

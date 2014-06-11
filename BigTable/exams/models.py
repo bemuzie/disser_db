@@ -29,11 +29,16 @@ class CyrillicTagedItem(TaggedItem):
 
 ###Patient information
 class Patient(models.Model):
+	CHOICES = {'gender':(('m','male'),
+   			  			 ('f','female'))}
+			  
 	fio = models.CharField(max_length = 100)
 	birth_date = models.DateField(blank=True, null=True)
+	gender = models.CharField(max_length = 1,choices = CHOICES['gender'])
 	weight = models.IntegerField(blank=True, null=True)
 	clinical_data = models.CharField(max_length = 500)
 	tags = TaggableManager(through=CyrillicTagedItem,blank=True)
+	final_diagnosis = models.CharField(max_length = 100)
 
 	###Anamnes
 
@@ -75,9 +80,12 @@ class PerfusionCT(models.Model):
 	mtt =models.IntegerField(default =0)
 
 class Examination(models.Model):
-	CHOICES = {'modalities':(('C','CT'),
-							('P','Perfusion CT'),
-							('M','MRI')),
+	CHOICES = {'modalities':(('CT','CT'),
+							('PCT','Perfusion CT'),
+							('MRI','MRI'),
+							('PET','PET'),
+							('EUS','EUS')),
+
 				'contrast':(('O',u'Омнипак'),
 							('U',u'Ультравист'),
 							('Op',u'Оптирэй'),
@@ -102,7 +110,7 @@ class Examination(models.Model):
 									 (2,u'Есть')
 								  )}
 
-	modality = models.CharField(max_length=1,choices = CHOICES['modalities'])
+	modality = models.CharField(max_length=3,choices = CHOICES['modalities'])
 	ce_agent = models.CharField(max_length=10,choices = CHOICES['contrast'])
 	ce_conc = models.IntegerField(default =0,choices = CHOICES['contrast_conc'])
 	ce_volume = models.IntegerField(default =0)
@@ -132,7 +140,11 @@ class Examination(models.Model):
 	##		Other
 	lymphadenopathy = models.BooleanField()
 	ascit = models.BooleanField()
-	arterial_invasion = models.IntegerField(default=0,choices=CHOICES['arterial_invasion']) # 0 - exact no, 1 - <50%, 2 - 50-75%, 3 >75%, 4 - exact yes
+	arterial_invasion_celiac = models.IntegerField(default=0,choices=CHOICES['arterial_invasion']) # 0 - exact no, 1 - <50%, 2 - 50-75%, 3 >75%, 4 - exact yes
+	arterial_invasion_messup = models.IntegerField(default=0,choices=CHOICES['arterial_invasion']) # 0 - exact no, 1 - <50%, 2 - 50-75%, 3 >75%, 4 - exact yes
+	arterial_invasion_splen = models.IntegerField(default=0,choices=CHOICES['arterial_invasion']) # 0 - exact no, 1 - <50%, 2 - 50-75%, 3 >75%, 4 - exact yes
+	arterial_invasion_hep = models.IntegerField(default=0,choices=CHOICES['arterial_invasion']) # 0 - exact no, 1 - <50%, 2 - 50-75%, 3 >75%, 4 - exact yes
+	arterial_invasion_other = models.IntegerField(default=0,choices=CHOICES['arterial_invasion']) # 0 - exact no, 1 - <50%, 2 - 50-75%, 3 >75%, 4 - exact yes
 	portal_invasion = models.IntegerField(default=0,choices=CHOICES['portal_invasion']) # 0 - exact no, 1 - probable, 2 - exact yes
 
 	##PCT
@@ -141,6 +153,7 @@ class Examination(models.Model):
 	#links
 	patient=models.ForeignKey(Patient,default =0)
 	
+
 
 ### Показатели
 

@@ -6,7 +6,7 @@ import os
 import dicom
 import shutil
 from datetime import datetime
-import image
+
 
 class Vividict(dict):
     def __missing__(self, key):
@@ -125,8 +125,8 @@ with folder structure /PatientName-BirthDate/StudyNumber/SeriesNumber/"""
     log.close()
 
 
-folder='/home/denest/EXAMPLE_PATIENT/Volumes/DCM/20120216_301'
-out_folder='/home/denest/EXAMPLE_PATIENT/Volumes/DCM/20120216_301'
+folder='/home/denest/PERF_volumes/DASHKOV A.P. 05.09.1939/DCM/20140521_565'
+out_folder='/home/denest/PERF_volumes/DASHKOV A.P. 05.09.1939/DCM/20140521_565'
 dcm_parser(folder,out_folder)
 
 

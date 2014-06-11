@@ -46,7 +46,7 @@ class DocsForm(forms.ModelForm):
 
 class ExaminationForm(forms.ModelForm):
     
-    conclusion = forms.CharField(widget = forms.Textarea)
+    #conclusion = forms.CharField(widget = forms.Textarea)
 
     class Meta:
         model = Examination

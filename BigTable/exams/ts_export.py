@@ -13,7 +13,7 @@ from django.core.management import setup_environ
 import BigTable.settings
 setup_environ(BigTable.settings)
 from exams.models import Patient,Examination,Perfusion
-
+from django.core.exceptions import ObjectDoesNotExist
 
 #os.popen('chcp').read()
 #import locale
@@ -32,23 +32,30 @@ sys.stderr = codecs.getwriter('utf8')(sys.stderr)
 #print sys.getdefaultencoding()
 #print sys.stdout.encoding # win32
 
+OUTPUT_DIR = '/home/denest/DISSER/R/data/'
+output_csv= 'ts_summary.csv'
+f=open(os.path.join(OUTPUT_DIR,output_csv),'w')
 
-ROOT = './'
-FILE = 'example.csv'
-EXAM_NUMBER = 69
 
-f=open(os.path.join(ROOT,FILE))
-f_list = f.readlines()
-f_list = [i[:-1].split(';') for i in f_list]
-print f_list
-examination = Examination.objects.get(pk=EXAM_NUMBER)
+table_dict={'patient': lambda roi: roi.phase.examination.patient.id,
+			'exam': lambda roi:roi.phase.examination.id,
+			'roi' : lambda roi:roi.roi,
+			't' : roi.phase.time,
+			'median' : roi.density
+			}
 
-for roi in f_list[1:]:
-	print roi
-	perfusion_parametrs = dict([[par_name, par_value] for par_name, par_value in zip(f_list[0],roi)])
-	print perfusion_parametrs
-	perf_pars = examination.perfusion_set.get_or_create(examination=EXAM_NUMBER,**perfusion_parametrs)
-	Perfusion(perfusion_parametrs)
-	print dir(perf_pars)
-	
-	examination.save()
+
+first_line=table_dict.keys()
+f.write(','.join(first_line)+'\n')
+for ex in Examination.objects.all():
+	for t in ex.phase_set.all():
+		for roi in t.density_set.all():
+
+			try:
+				f.write(','.join( [ str(table_dict[i](ex)) for i in first_line] )+'\n')
+			except ValueError,s:
+				print s
+			except ObjectDoesNotExist,s:
+				print s
+		
+f.close()
