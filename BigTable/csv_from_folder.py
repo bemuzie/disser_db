@@ -67,16 +67,6 @@ with folder structure /PatientName-BirthDate/StudyNumber/SeriesNumber/"""
                 acquisition_num= tnum(dcm,0x00200012)
                 #study_time=tnum(dcm,0x00080030)
                 contrast_time=tnum(dcm,0x00181042)
-
-
-
-
-
-
-
-
-
-
                 output_dict[contrast_time][series_num][series_time][acquisition_num]
                 output_dict[contrast_time][series_num][series_time][acquisition_num]=acquisition_time
                 

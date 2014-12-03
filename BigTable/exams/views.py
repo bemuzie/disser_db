@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 from django.conf import settings
 from django.utils import simplejson
-from django.http import HttpResponse, HttpResponseRedirect, Http404,HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseRedirect, Http404, HttpResponseBadRequest
 from django.template import RequestContext, loader, Context
-from django.shortcuts import get_object_or_404, render,redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib import messages
 from django.utils.encoding import smart_str
 from django.core.urlresolvers import reverse
@@ -14,30 +14,33 @@ from datetime import date
 import os
 import cStringIO as StringIO
 from reportlab.pdfgen import canvas
-from reportlab.pdfbase import ttfonts,pdfmetrics
+from reportlab.pdfbase import ttfonts, pdfmetrics
 from exams.models import *
 from exams.forms import *
 from exams import decorators
 
 
 def index(request):
-    reminder=Reminder.objects.filter(done=False).order_by('remind_date')
+    reminder = Reminder.objects.filter(done=False).order_by('remind_date')
     template = loader.get_template('reports/index.html')
-    today=date.today()
-    reminder_expired=[r for r in reminder if r.remind_date<today]
-    reminder_uptodate=[r for r in reminder if r.remind_date>=today]
-    context = RequestContext(request,{'reminder_expired':reminder_expired,
-                                        'reminder_uptodate':reminder_uptodate})
+    today = date.today()
+    reminder_expired = [r for r in reminder if r.remind_date < today]
+    reminder_uptodate = [r for r in reminder if r.remind_date >= today]
+    context = RequestContext(request, {'reminder_expired': reminder_expired,
+                                       'reminder_uptodate': reminder_uptodate})
     return HttpResponse(template.render(context))
+
 
 def patient_list(request):
     search_field = request.GET.get('search') or ''
-    latest_patients_list = Patient.objects.filter(fio__regex=r'(%s|%s)'%(search_field,search_field.capitalize())).order_by('-fio')
+    latest_patients_list = Patient.objects.filter(
+        fio__regex=r'(%s|%s)' % (search_field, search_field.capitalize())).order_by('-fio')
     exams_num_list = [len(i.examination_set.all()) for i in latest_patients_list]
-    latest_patients_list = zip(latest_patients_list,exams_num_list)
+    latest_patients_list = zip(latest_patients_list, exams_num_list)
     template = loader.get_template('reports/patient_list.html')
-    context = RequestContext(request, {'latest_patients_list':latest_patients_list})
+    context = RequestContext(request, {'latest_patients_list': latest_patients_list})
     return HttpResponse(template.render(context))
+
 
 def detail(request, patient_id):
     patient = get_object_or_404(Patient, pk=patient_id)
@@ -47,84 +50,88 @@ def detail(request, patient_id):
     examinations = patient.examination_set.all()
     docs_form = DocsForm()
     reminder_formset = ReminderFormSet(queryset=Reminder.objects.filter(patient=patient),
-        initial=[{'patient':patient}])
-    
+                                       initial=[{'patient': patient}])
+
     if request.POST.get('patient_submit'):
-        
-        patient_form = PatientForm_lite(request.POST or None,instance=patient)
+
+        patient_form = PatientForm_lite(request.POST or None, instance=patient)
         if patient_form.is_valid():
             patient_form.save()
 
             patient_form = PatientForm_lite(instance=patient)
             return HttpResponseRedirect(reverse('exams.views.detail', args=(patient.id,)))
     elif request.POST.get('docs_submit'):
-        
-        docs_form = DocsForm(request.POST or None,request.FILES or None)
+
+        docs_form = DocsForm(request.POST or None, request.FILES or None)
         if docs_form.is_valid():
             docs_form.save(commit=False)
-            docs_form.patient=patient
-            
+            docs_form.patient = patient
+
             patient.docs_set.add(docs_form.instance)
             docs_form = DocsForm()
             return HttpResponseRedirect(reverse('exams.views.detail', args=(patient.id,)))
-    
-    return render(request,'reports/detail.html',{'patient':patient,
-                                                'examinations' : examinations, 
-                                                'docs_form':docs_form,
-                                                "patient_form":patient_form,
-                                                'reminder_formset':reminder_formset,
-                                                'procedure_form':procedure_form,
-                                                'analysis_form':analysis_form
-                                                })
+
+    return render(request, 'reports/detail.html', {'patient': patient,
+                                                   'examinations': examinations,
+                                                   'docs_form': docs_form,
+                                                   "patient_form": patient_form,
+                                                   'reminder_formset': reminder_formset,
+                                                   'procedure_form': procedure_form,
+                                                   'analysis_form': analysis_form
+    })
+
 
 def add_patient(request):
-    
     patient_form = PatientForm(request.POST or None)
     if patient_form.is_valid():
         patient_form.save()
         return HttpResponseRedirect(reverse('exams.views.detail', args=(patient_form.instance.id,)))
-    return render (request,'reports/add_patient.html',
-        {'patient_form':patient_form,})
+    return render(request, 'reports/add_patient.html',
+                  {'patient_form': patient_form, })
+
+
 def new_examination(request, patient_id, examination_id=None):
     patient = get_object_or_404(Patient, pk=patient_id)
     if examination_id:
-        examination_form = ExaminationForm(request.POST or None, 
-                                        instance = patient.examination_set.get(pk=examination_id))
+        examination_form = ExaminationForm(request.POST or None,
+                                           instance=patient.examination_set.get(pk=examination_id))
     else:
         examination_form = ExaminationForm(request.POST or None)
-        
+
     if examination_form.is_valid():
         examination_form.save(commit=False)
-        examination_form.patient=patient
+        examination_form.patient = patient
         patient.examination_set.add(examination_form.instance)
         return HttpResponseRedirect(reverse('exams.views.detail', args=(patient.id,)))
-    return render(request, 'reports/add_examination.html', {'patient':patient,
-                                                            'examination_form':examination_form})
+    return render(request, 'reports/add_examination.html', {'patient': patient,
+                                                            'examination_form': examination_form})
+
+
 def modify_examination(request, patient_id, examination_id):
-    #Изменение исследования, добавление временных задержек, описание результатов исследования
+    # Изменение исследования, добавление временных задержек, описание результатов исследования
     examination = get_object_or_404(Examination, pk=examination_id)
     patient = get_object_or_404(Patient, pk=examination.patient.id)
-    examination_form = ExaminationForm(request.POST or None, 
-                                        instance = examination)
+    examination_form = ExaminationForm(request.POST or None,
+                                       instance=examination)
     phase_formset = PhaseFormSet(queryset=Phase.objects.filter(examination=examination),
-        initial=[{'examination':examination}])
-
+                                 initial=[{'examination': examination}])
 
     if examination_id:
-        examination_form = ExaminationForm(request.POST or None, 
-                                        instance = patient.examination_set.get(pk=examination_id))
+        examination_form = ExaminationForm(request.POST or None,
+                                           instance=patient.examination_set.get(pk=examination_id))
     else:
         examination_form = ExaminationForm(request.POST or None)
-        
+
     if examination_form.is_valid():
         examination_form.save(commit=False)
-        examination_form.patient=patient
+        examination_form.patient = patient
         patient.examination_set.add(examination_form.instance)
         return HttpResponseRedirect(reverse('exams.views.detail', args=(patient.id,)))
-    return render(request, 'reports/modify_examination.html', {'patient':patient,
-                                                            'examination':examination,
-                                                            'examination_form':examination_form,
-                                                            'phase_formset':phase_formset})
+    return render(request, 'reports/modify_examination.html', {'patient': patient,
+                                                               'examination': examination,
+                                                               'examination_form': examination_form,
+                                                               'phase_formset': phase_formset})
+
 
 def modify_phase(request, patient_id, examination_id):
     examination = get_object_or_404(Examination, pk=examination_id)
@@ -134,42 +141,39 @@ def modify_phase(request, patient_id, examination_id):
         if phase_formset.is_valid():
             phase_formset.save(commit=False)
             for f in phase_formset:
-                f.examination=examination
+                f.examination = examination
                 try:
-                    pi=examination.phase_set.get(pk=f.instance.id)
-                    pi=f.instance
+                    pi = examination.phase_set.get(pk=f.instance.id)
+                    pi = f.instance
                 except:
                     examination.phase_set.add(f.instance)
-            
+
             phase_formset = PhaseFormSet(queryset=Phase.objects.filter(examination=examination),
-                initial=[{'examination':examination}])
-            return HttpResponseRedirect(reverse('exams.views.modify_examination', args=(patient_id,examination.id)))
-    
+                                         initial=[{'examination': examination}])
+            return HttpResponseRedirect(reverse('exams.views.modify_examination', args=(patient_id, examination.id)))
 
     if request.POST.get("change_phase"):
         phase = examination.phase_set.get(pk=request.POST.get("change_phase"))
         print 1
         phase.done = not phase.done
         phase.save()
-        
+
         return HttpResponse(status=204)
     if request.POST.get("delete_phase"):
-        
         examination.phase_set.get(pk=request.POST.get("delete_phase")).delete()
         return HttpResponseRedirect(reverse('exams.views.modify_examination', args=(patient_id, examination.id)))
     return modify_examination(request, patient_id, examination_id)
 
-    
 
 def actions_examination(request, patient_id, examination_id):
-    #Контролирует действие кнопочек в списке исследований на странице пациента
-    
+    # Контролирует действие кнопочек в списке исследований на странице пациента
+
     if request.POST.get('delete'):
         patient = get_object_or_404(Patient, pk=patient_id)
         patient.examination_set.get(pk=examination_id).delete()
         return HttpResponseRedirect(reverse('exams.views.detail', args=(patient.id,)))
     elif request.POST.get('modify'):
-        return HttpResponseRedirect(reverse('exams.views.modify_examination', args=(patient_id,examination_id)))
+        return HttpResponseRedirect(reverse('exams.views.modify_examination', args=(patient_id, examination_id)))
     elif request.POST.get('download'):
         patient = get_object_or_404(Patient, pk=patient_id)
         examination = patient.examination_set.get(pk=examination_id)
@@ -183,74 +187,75 @@ def actions_examination(request, patient_id, examination_id):
         from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
         from reportlab.lib.units import inch
         from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER
+
         MyFontObject = ttfonts.TTFont('Serif', 'Tinos-Regular.ttf')
         MyFontObject2 = ttfonts.TTFont('SerifHeader', 'Oranienbaum.ttf')
         pdfmetrics.registerFont(MyFontObject)
         pdfmetrics.registerFont(MyFontObject2)
 
-        doc = SimpleDocTemplate(buffer,pagesize=letter,
-                        rightMargin=72,leftMargin=72,
-                        topMargin=52,bottomMargin=18)
+        doc = SimpleDocTemplate(buffer, pagesize=letter,
+                                rightMargin=72, leftMargin=72,
+                                topMargin=52, bottomMargin=18)
         #doc.setFont("Arial", 40)
-        styles=getSampleStyleSheet()
+        styles = getSampleStyleSheet()
         styles.add(ParagraphStyle(name='Justify',
-                                alignment=TA_JUSTIFY,
-                                fontName="Serif",
-                                fontSize=12,
-                                leading = 14
-                                ))
+                                  alignment=TA_JUSTIFY,
+                                  fontName="Serif",
+                                  fontSize=12,
+                                  leading=14
+        ))
         styles.add(ParagraphStyle(name='Header1',
-                                 alignment=TA_CENTER,
-                                 fontName="SerifHeader",
-                                 fontSize=14,
-                                 leading = 16
-                                 ))
-        
+                                  alignment=TA_CENTER,
+                                  fontName="SerifHeader",
+                                  fontSize=14,
+                                  leading=16
+        ))
+
 
         # Create the PDF object, using the StringIO object as its "file."
 
 
         print [patient.fio,
-                    patient.birth_date.__str__(),
-                    examination.date.__str__(),
-                    examination.modality,
-                    examination.ce_agent,
-                    patient.clinical_data,]
-        data_text=u""" 
+               patient.birth_date.__str__(),
+               examination.date.__str__(),
+               examination.modality,
+               examination.ce_agent,
+               patient.clinical_data, ]
+        data_text = u"""
                 <font color=(0.25,0.25,0.25) fontName=SerifHeader > Ф.И.О.:</font> %s \n
                 <font color=(0.25,0.25,0.25) fontName=SerifHeader > Год рождения: </font> %s \n
                 <font color=(0.25,0.25,0.25) fontName=SerifHeader > Дата исследования: </font> %s \n
                 <font color=(0.25,0.25,0.25) fontName=SerifHeader > Область исследования: </font>%s \n
                 <font color=(0.25,0.25,0.25) fontName=SerifHeader > Контрастирование: </font>%s \n
                 <font color=(0.25,0.25,0.25) fontName=SerifHeader > Клинические данные: </font>%s \n
-                """%(patient.fio,
-                    patient.birth_date,
-                    examination.date,
-                    examination.modality,
-                    examination.ce_agent,
-                    patient.clinical_data,
-                    )                       
-        output_text=[]
+                """ % (patient.fio,
+                       patient.birth_date,
+                       examination.date,
+                       examination.modality,
+                       examination.ce_agent,
+                       patient.clinical_data,
+        )
+        output_text = []
 
         output_text.append(Paragraph(
             "РОССИЙСКИЙ НАУЧНЫЙ ЦЕНТР РАДИОЛОГИИ И ХИРУРГИЧЕСКИХ ТЕХНОЛОГИЙ"
-            ,styles["Header1"]))
+            , styles["Header1"]))
         output_text.append(Paragraph(
             "Отделение компьютерной томографии"
-            ,styles["Header1"]))
+            , styles["Header1"]))
         output_text.append(Spacer(1, 22))
-        
+
         for i in data_text.split('\n'):
             output_text.append(Paragraph(i, styles["Justify"]))
-        
+
         output_text.append(Spacer(1, 12))
         output_text.append(Paragraph(u"Протокол:", styles["Justify"]))
         output_text.append(Spacer(1, 12))
         for i in examination.conclusion.split("\n"):
             output_text.append(Paragraph(i, styles["Justify"]))
-        
+
         doc.build(output_text)
-        
+
 
 
         # Close the PDF object cleanly.
@@ -264,9 +269,10 @@ def actions_examination(request, patient_id, examination_id):
         return response
     else:
         raise Http404
+
+
 @decorators.example
 def modify_reminder(request, patient_id):
-    
     patient = get_object_or_404(Patient, pk=patient_id)
     reminder_form = ReminderForm(request.POST or None)
     if request.POST.get("new_reminder"):
@@ -276,35 +282,33 @@ def modify_reminder(request, patient_id):
             print 'after'
             reminder_formset.save(commit=False)
             for f in reminder_formset:
-                f.patient=patient
+                f.patient = patient
                 try:
-                    pi=patient.reminder_set.get(pk=f.instance.id)
-                    pi=f.instance
+                    pi = patient.reminder_set.get(pk=f.instance.id)
+                    pi = f.instance
 
 
                 except:
                     patient.reminder_set.add(f.instance)
-            
+
             reminder_formset = ReminderFormSet(queryset=Reminder.objects.filter(patient=patient),
-                initial=[{'patient':patient}])
+                                               initial=[{'patient': patient}])
             return HttpResponseRedirect(reverse('exams.views.detail', args=(patient.id,)))
-    
 
     if request.POST.get("change_reminder"):
         reminder = patient.reminder_set.get(pk=request.POST.get("change_reminder"))
         print 1
         reminder.done = not reminder.done
         reminder.save()
-        
+
         return HttpResponse(status=204)
     if request.POST.get("delete_reminder"):
-        
         patient.reminder_set.get(pk=request.POST.get("delete_reminder")).delete()
         return HttpResponseRedirect(reverse('exams.views.detail', args=(patient.id,)))
     return detail(request, patient_id)
 
+
 def modify_procedure(request, patient_id):
-    
     patient = get_object_or_404(Patient, pk=patient_id)
     procedure_form = ProcedureForm(request.POST or None)
     if request.POST.get("new_procedure"):
@@ -315,7 +319,7 @@ def modify_procedure(request, patient_id):
             procedure_form.save()
             patient.procedure_set.add(procedure_form.instance)
             return HttpResponseRedirect(reverse('exams.views.detail', args=(patient.id,)))
-    
+
     """
     if request.POST.get("change_procedure"):
         procedure = patient.procedure_set.get(pk=request.POST.get("change_procedure"))
@@ -330,9 +334,9 @@ def modify_procedure(request, patient_id):
         patient.procedure_set.get(pk=request.POST.get("delete_procedure")).delete()
         return HttpResponseRedirect(reverse('exams.views.detail', args=(patient.id,)))
     return detail(request, patient_id)
-        
+
+
 def modify_analysis(request, patient_id):
-    
     patient = get_object_or_404(Patient, pk=patient_id)
     analysis_form = AnalysisForm(request.POST or None)
     if request.POST.get("new_analysis"):
@@ -343,7 +347,7 @@ def modify_analysis(request, patient_id):
             analysis_form.save()
             patient.analysis_set.add(analysis_form.instance)
             return HttpResponseRedirect(reverse('exams.views.detail', args=(patient.id,)))
-    
+
     """
     if request.POST.get("change_analysis"):
         analysis = patient.analysis_set.get(pk=request.POST.get("change_analysis"))
@@ -360,17 +364,19 @@ def modify_analysis(request, patient_id):
     return detail(request, patient_id)
 
 
-def delete_patient (request, patient_id):
+def delete_patient(request, patient_id):
     if request.POST:
         patient = get_object_or_404(Patient, pk=patient_id)
         patient.delete()
         return HttpResponseRedirect(reverse('exams.views.patient_list'))
     else:
         raise Http404
+
+
 def statistis(request):
     patients_num = len(Patient.objects.all())
     examinations_num = len(Examinations.objects.all().filter(modality='P'))
-    
+
 
 def upload(request):
     """
@@ -408,19 +414,19 @@ def upload(request):
     import uuid
 
     # settings for the file upload
-    #   you can define other parameters here
+    # you can define other parameters here
     #   and check validity late in the code
     options = {
         # the maximum file size (must be in bytes)
-        "maxfilesize": 2 * 2 ** 20, # 2 Mb
+        "maxfilesize": 2 * 2 ** 20,  # 2 Mb
         # the minimum file size (must be in bytes)
-        "minfilesize": 1 * 2 ** 10, # 1 Kb
+        "minfilesize": 1 * 2 ** 10,  # 1 Kb
         # the file types which are going to be allowed for upload
         #   must be a mimetype
         "acceptedformats": (
             "image/jpeg",
             "image/png",
-            )
+        )
     }
 
 
@@ -433,7 +439,7 @@ def upload(request):
 
         # if 'f' query parameter is not specified
         # file is being uploaded
-        if not ("f" in request.GET.keys()): # upload file
+        if not ("f" in request.GET.keys()):  # upload file
 
             # make sure some files have been uploaded
             if not request.FILES:
@@ -524,7 +530,7 @@ def upload(request):
 
             # url for deleting the file in case user decides to delete it
             response_data["delete_url"] = request.path + "?" + urllib.urlencode(
-                    {"f": uid + "/" + os.path.split(filename)[1]})
+                {"f": uid + "/" + os.path.split(filename)[1]})
             # specify the delete type - must be POST for csrf
             response_data["delete_type"] = "POST"
 
@@ -548,7 +554,7 @@ def upload(request):
             # return the data to the uploading plugin
             return HttpResponse(response_data, mimetype=response_type)
 
-        else: # file has to be deleted
+        else:  # file has to be deleted
 
             # get the file path by getting it from the query (e.g. '?f=filename.here')
             filepath = os.path.join(temp_path, request.GET["f"])
@@ -572,7 +578,7 @@ def upload(request):
             # here it always has to be json
             return HttpResponse(response_data, mimetype="application/json")
 
-    else: #GET
+    else:  #GET
         # load the template
         t = loader.get_template("upload.html")
         c = Context({
@@ -585,7 +591,7 @@ def upload(request):
             # some of the parameters to be checked by javascript
             "maxfilesize": options["maxfilesize"],
             "minfilesize": options["minfilesize"],
-            })
+        })
         # add csrf token value to the dictionary
         c.update(csrf(request))
         # return
