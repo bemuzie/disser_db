@@ -32,7 +32,7 @@ sys.stderr = codecs.getwriter('utf8')(sys.stderr)
 #print sys.getdefaultencoding()
 #print sys.stdout.encoding # win32
 
-OUTPUT_DIR = '/home/denest/DISSER/R/data/'
+OUTPUT_DIR = '/home/denest/diss/R/data/'
 output_csv= 'summary.csv'
 f=open(os.path.join(OUTPUT_DIR,output_csv),'w')
 
@@ -42,18 +42,18 @@ table_dict={'patient': lambda exam:exam.patient.id,
 			'gender': lambda exam:exam.patient.gender,
 			'diagnosis': lambda exam:exam.patient.final_diagnosis,
 			'date': lambda exam:exam.date,
-			'chemo': lambda exam:exam.patient.procedure_set.filter(procedure='chemo',date__lt=exam.date),#how many courses of chemotherapy patient had before this examination
-			'radio': lambda exam:exam.patient.procedure_set.filter(procedure='radio',date__lt=exam.date), #how many courses of radiotherapy patient had before this examination
+			'chemo': lambda exam:exam.patient.procedure_set.filter(procedure='chemo',date__lt=exam.date) or 0,#how many courses of chemotherapy patient had before this examination
+			'radio': lambda exam:exam.patient.procedure_set.filter(procedure='radio',date__lt=exam.date) or 0, #how many courses of radiotherapy patient had before this examination
 			'exams': lambda exam:len(exam.patient.examination_set.filter(date__lt=exam.date)), #how many examinations patient had before this examination
 			'arterial_inv_any': lambda exam: int(any(exam.__dict__[i]==4 for i in ['arterial_invasion_celiac',
 																			   'arterial_invasion_messup',
-																			   'arterial_invasion_spleen',
+																			   'arterial_invasion_splen',
 																			   'arterial_invasion_hep',
 																			   'arterial_invasion_other'])),
 			'metastasis':lambda exam: exam.metastasis,
-			'SCT_diagnosis': exam.patient.examination_set.filter(modality='CT'),
-			'MRI_diagnosis': exam.patient.examination_set.filter(modality='MR'),
-			'PET_diagnosis': exam.patient.examination_set.filter(modality='PT'),
+			'SCT_diagnosis': lambda exam:exam.patient.examination_set.filter(modality='CT') or 0,
+			'MRI_diagnosis': lambda exam:exam.patient.examination_set.filter(modality='MR') or 0,
+			'PET_diagnosis': lambda exam:exam.patient.examination_set.filter(modality='PT') or 0,
 			
 			}
 

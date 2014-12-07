@@ -11,7 +11,7 @@ class PatientForm(forms.ModelForm):
         self.fields['birth_date'].widget.attrs['id'] = 'dp2'
         self.fields['birth_date'].widget.attrs['data-date-format'] = "dd.mm.yyyy"
         self.fields['birth_date'].widget.attrs['value'] = "02/16/2013"
-        
+         
     class Meta:
         model = Patient
         birth_date = forms.DateField(widget= widgets.SelectDateWidget())

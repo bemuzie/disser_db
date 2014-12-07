@@ -44,7 +44,7 @@ def patient_list(request):
 
 def detail(request, patient_id):
     patient = get_object_or_404(Patient, pk=patient_id)
-    patient_form = PatientForm_lite(instance=patient)
+    patient_form = PatientForm(instance=patient)
     procedure_form = ProcedureForm()
     analysis_form = AnalysisForm()
     examinations = patient.examination_set.all()
@@ -54,11 +54,11 @@ def detail(request, patient_id):
 
     if request.POST.get('patient_submit'):
 
-        patient_form = PatientForm_lite(request.POST or None, instance=patient)
+        patient_form = PatientForm(request.POST or None, instance=patient)
         if patient_form.is_valid():
             patient_form.save()
 
-            patient_form = PatientForm_lite(instance=patient)
+            patient_form = PatientForm(instance=patient)
             return HttpResponseRedirect(reverse('exams.views.detail', args=(patient.id,)))
     elif request.POST.get('docs_submit'):
 

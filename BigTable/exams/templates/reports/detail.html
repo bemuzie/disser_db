@@ -90,14 +90,15 @@
 		{{analysis_form}}
 		<input class="btn btn-success " type="submit" value="Новое" name = "new_analysis">
 		</div>
-	</form> 
+	</form>  
 
-<!--
-	<form action="" method="post" name='patient' id="patient">
+	<!---crashes. Dont understand why
+	<form action="/reports/{{patient.id}}" method="post" name='patient' id="patient">
 	{%csrf_token%}
 	{{patient_form | bootstrap}}
+	<input class="btn btn-success " type="submit" value="Сохранить изменения" name = "save_changes">
 	</form> 
--->
+	-->
 </div>
 <div class='container'>
 
